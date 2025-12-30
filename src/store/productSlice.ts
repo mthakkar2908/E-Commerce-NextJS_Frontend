@@ -8,11 +8,9 @@ export interface Product {
   about_product: string;
   quan: number;
   is_fave: boolean;
-  // add other product fields as necessary
 }
 
 export interface ProductState {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   product: Product | null;
     token: string | null;
   status: "idle" | "loading" | "succeeded" | "failed";

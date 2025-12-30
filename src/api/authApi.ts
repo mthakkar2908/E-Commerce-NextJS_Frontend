@@ -8,7 +8,6 @@ export function getProducts() {
 	return api.get('/products');
 }
 
-
 export function updateFav(id: string | undefined) {
 	return api.patch(`/products/${id}`);
 }
@@ -19,6 +18,10 @@ export function getProductById(productId: string | undefined) {
 
 export function searchProducts(query : string) {
 	return api.get(`/products/searchProducts?q=${query}`)
+}
+
+export function getPosts(){
+	return api.get('/posts');
 }
 
 export const authApi = {

@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle
 } from "@/components/ui/card";
+import LoadingWrapper from "@/src/common/LoadingWrapper";
 import useDebounce from "@/src/common/useDebounce";
 
 import { useAppDispatch, useAppSelector } from "@/src/store";
@@ -179,7 +180,9 @@ const MainDashboard = () => {
           </div>
         </>
       ) : (
-        <div>Loading...</div>
+        <div>
+          <LoadingWrapper />
+        </div>
       )}
     </div>
   );
