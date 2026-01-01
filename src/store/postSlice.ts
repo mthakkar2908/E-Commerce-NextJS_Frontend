@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { createPost, deletePost, getPosts, updateFav } from "../api/authApi";
 
 export interface Post {
-  _id:  string;
+  _id: string;
   name: string;
   post_description: string;
   imageUrl: string;
@@ -48,10 +48,9 @@ export const CreatePost = createAsyncThunk(
   },
 );
 
-
 export const DeletePost = createAsyncThunk(
   "post/DeletePost",
-  async (postId : string, { rejectWithValue }) => {
+  async (postId: string, { rejectWithValue }) => {
     try {
       const resp = await deletePost(postId);
       return resp;

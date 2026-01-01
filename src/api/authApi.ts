@@ -32,7 +32,7 @@ export function createPost(formData: FormData) {
   });
 }
 
-export function deletePost(postId : string){
+export function deletePost(postId: string) {
   return api.delete(`posts/deletePost/${postId}`);
 }
 

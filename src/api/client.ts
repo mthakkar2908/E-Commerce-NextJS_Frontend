@@ -14,14 +14,14 @@ function createClient(): AxiosInstance {
   });
 
   instance.interceptors.request.use((config) => {
-  if (config.data instanceof FormData) {
-    delete config.headers["Content-Type"];
-  } else {
-    config.headers["Content-Type"] = "application/json";
-  }
+    if (config.data instanceof FormData) {
+      delete config.headers["Content-Type"];
+    } else {
+      config.headers["Content-Type"] = "application/json";
+    }
 
-  return config;
-});
+    return config;
+  });
 
   instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     try {
