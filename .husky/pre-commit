@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/h"
+
+# Run lint & build on commit only for the target branch (override with TARGET_BRANCH)
+TARGET_BRANCH=${TARGET_BRANCH:-main}
+
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+
+if [ "${CURRENT_BRANCH}" != "${TARGET_BRANCH}" ]; then
+  echo "Skipping pre-commit checks: current branch '${CURRENT_BRANCH}' != '${TARGET_BRANCH}'"
+  exit 0
+fi
+
+echo "Starting pre-commit checks on branch '${CURRENT_BRANCH}'..."
+echo "Running lint..."
+yarn lint || { echo 'yarn lint failed — aborting commit.'; exit 1; }
+
+echo "Lint passed. Starting build (this may take a while)..."
+yarn build || { echo 'yarn build failed — aborting commit.'; exit 1; }
+
+echo 'Pre-commit checks passed — continuing commit.'
+exit 0
