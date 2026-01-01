@@ -14,38 +14,34 @@ const initialState: AuthState = {
   user: null,
   token: null,
   status: "idle",
-  error: null
+  error: null,
 };
 
 export const login = createAsyncThunk(
   "auth/login",
   async (
     credentials: { email: string; password: string },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
       const resp = await loginApi(credentials);
       return resp;
-    } catch  {
+    } catch {
       return rejectWithValue("Login failed");
     }
-  }
+  },
 );
-
 
 export const getProduct = createAsyncThunk(
   "product/getProducts",
-  async (
-    _,
-    { rejectWithValue }
-  ) => {
+  async (_, { rejectWithValue }) => {
     try {
       const resp = await getProducts();
       return resp;
-    } catch  {
+    } catch {
       return rejectWithValue("Products not fetched.");
     }
-  }
+  },
 );
 
 const authSlice = createSlice({
@@ -63,7 +59,7 @@ const authSlice = createSlice({
     setSessionFromStorage(state, action: PayloadAction<any>) {
       state.user = action.payload?.user ?? null;
       state.token = action.payload?.token ?? null;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -86,7 +82,7 @@ const authSlice = createSlice({
         state.status = "failed";
         state.error = action.payload as string;
       });
-  }
+  },
 });
 
 export const { logout, setSessionFromStorage } = authSlice.actions;

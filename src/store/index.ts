@@ -1,14 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit';
-import authReducer from './authSlice';
-import productReducer from './productSlice';
-import postReducer from './postSlice';
-import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
+import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "./authSlice";
+import productReducer from "./productSlice";
+import postReducer from "./postSlice";
+import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    product : productReducer,
-    post : postReducer,
+    product: productReducer,
+    post: postReducer,
   },
 });
 

@@ -1,7 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import {
-    getPosts
-} from "../api/authApi";
+import { getPosts } from "../api/authApi";
 
 export interface Post {
   _id: number;
@@ -22,7 +20,7 @@ const initialState: PostState = {
   Post: null,
   token: null,
   status: "idle",
-  error: null
+  error: null,
 };
 
 export const GetPosts = createAsyncThunk(
@@ -34,7 +32,7 @@ export const GetPosts = createAsyncThunk(
     } catch {
       return rejectWithValue("Posts not fetched.");
     }
-  }
+  },
 );
 
 const postSlice = createSlice({
@@ -57,7 +55,7 @@ const postSlice = createSlice({
         state.status = "failed";
         state.error = action.payload as string;
       });
-  }
+  },
 });
 
 export default postSlice.reducer;

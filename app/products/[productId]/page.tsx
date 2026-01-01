@@ -1,11 +1,11 @@
-import ProductPage from '@/src/modules/Products/ProductPage'
+import ProductPage from "@/src/modules/Products/ProductPage";
 
 const page = () => {
   return (
     <div>
-        <ProductPage />
+      <ProductPage />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

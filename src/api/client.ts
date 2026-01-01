@@ -5,8 +5,7 @@ import axios, {
 } from "axios";
 import { getSession, clearSession } from "../utils/session";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:7000";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:7000";
 
 function createClient(): AxiosInstance {
   const instance = axios.create({
@@ -17,26 +16,21 @@ function createClient(): AxiosInstance {
     withCredentials: false,
   });
 
-  instance.interceptors.request.use(
-    (config: InternalAxiosRequestConfig) => {
-      try {
-        const session = getSession();
-        const token = session?.user?.token ?? session?.accessToken;
+  instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+    try {
+      const session = getSession();
+      const token = session?.user?.token ?? session?.accessToken;
 
-        if (token) {
-          config.headers.set("Authorization", `Bearer ${token}`);
-        }
-      } catch {
+      if (token) {
+        config.headers.set("Authorization", `Bearer ${token}`);
       }
-      return config;
-    }
-  );
+    } catch {}
+    return config;
+  });
 
   instance.interceptors.response.use(
     (response) => response,
     (error) => {
-
-        
       if (error?.response?.status === 401) {
         try {
           clearSession();
@@ -45,7 +39,7 @@ function createClient(): AxiosInstance {
         }
       }
       return Promise.reject(error);
-    }
+    },
   );
 
   return instance;
@@ -55,9 +49,21 @@ const api = createClient();
 
 const client: {
   get<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T>;
-  post<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>;
-  put<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>;
-  patch<T = unknown>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T>;
+  post<T = unknown>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig,
+  ): Promise<T>;
+  put<T = unknown>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig,
+  ): Promise<T>;
+  patch<T = unknown>(
+    url: string,
+    data?: unknown,
+    config?: AxiosRequestConfig,
+  ): Promise<T>;
   delete<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T>;
   instance: AxiosInstance;
 } = {

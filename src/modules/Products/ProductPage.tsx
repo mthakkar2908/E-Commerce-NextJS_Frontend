@@ -7,7 +7,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card";
 import { Heart } from "lucide-react";
 import React, { useEffect } from "react";
@@ -60,40 +60,40 @@ const ProductPage = () => {
   }
 
   return (
-    <div className='mx-10 my-10 bg-white h-screen max-w-500px flex items-center justify-center'>
+    <div className="mx-10 my-10 bg-white h-screen max-w-500px flex items-center justify-center">
       <Card
         key={product?._id}
-        className='w-full max-w-sm shadow-[0_-4px_10px_-2px_gray,0_4px_10px_-2px_orange]'
+        className="w-full max-w-sm shadow-[0_-4px_10px_-2px_gray,0_4px_10px_-2px_orange]"
       >
         <CardHeader>
           <CardTitle>{product?.name}</CardTitle>
           <CardDescription>{product?.about_product}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className='flex justify-between'>
+          <div className="flex justify-between">
             <div>
-              <p className='mb-4 text-sm text-gray-600'>
+              <p className="mb-4 text-sm text-gray-600">
                 Price : ${product?.price}
               </p>
-              <p className='text-sm text-gray-600'>In Stock: {product?.quan}</p>
+              <p className="text-sm text-gray-600">In Stock: {product?.quan}</p>
             </div>
             <div>
               {product?.is_fav === false || !product?.is_fav ? (
                 <Heart
                   onClick={() => updateFavourite(product?._id)}
-                  className='text-red-500'
+                  className="text-red-500"
                 />
               ) : (
                 <Heart
                   onClick={() => updateFavourite(product?._id)}
-                  className='text-red-500 fill-red-500'
+                  className="text-red-500 fill-red-500"
                 />
               )}
             </div>
           </div>
         </CardContent>
-        <CardFooter className='flex-col gap-2'>
-          <Button type='submit' className='w-full'>
+        <CardFooter className="flex-col gap-2">
+          <Button type="submit" className="w-full">
             Add to cart
           </Button>
         </CardFooter>

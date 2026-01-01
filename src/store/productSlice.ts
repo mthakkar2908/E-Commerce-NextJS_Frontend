@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { getProductById, getProducts, searchProducts, updateFav} from "../api/authApi";
+import {
+  getProductById,
+  getProducts,
+  searchProducts,
+  updateFav,
+} from "../api/authApi";
 
 export interface Product {
   _id: number;
@@ -12,88 +17,71 @@ export interface Product {
 
 export interface ProductState {
   product: Product | null;
-    token: string | null;
+  token: string | null;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
 const initialState: ProductState = {
   product: null,
-    token: null,
+  token: null,
 
   status: "idle",
-  error: null
+  error: null,
 };
 
 export const getProduct = createAsyncThunk(
   "product/getProducts",
-  async (
-    _,
-    { rejectWithValue }
-  ) => {
+  async (_, { rejectWithValue }) => {
     try {
       const resp = await getProducts();
       return resp;
-    } catch  {
+    } catch {
       return rejectWithValue("Products not fetched.");
     }
-  }
+  },
 );
-
 
 export const GetFavourite = createAsyncThunk(
   "product/GetFavourite",
-  async (
-    id: string | undefined,
-    { rejectWithValue }
-  ) => {
+  async (id: string | undefined, { rejectWithValue }) => {
     try {
       const resp = await updateFav(id);
       return resp;
-    } catch  {
+    } catch {
       return rejectWithValue("failed to updated favourite.");
     }
-  }
+  },
 );
 
 export const GetProductsById = createAsyncThunk(
   "product/GetProductsById",
-  async (
-    productId: string | undefined,
-    { rejectWithValue }
-  ) => {
+  async (productId: string | undefined, { rejectWithValue }) => {
     try {
       const resp = await getProductById(productId);
       return resp;
-    } catch  {
+    } catch {
       return rejectWithValue("failed to updated favourite.");
     }
-  }
+  },
 );
 
 export const searchProductsByQuery = createAsyncThunk(
   "product/searchProductsByQuery",
-  async (
-    query: string,
-    { rejectWithValue }
-  ) => {
+  async (query: string, { rejectWithValue }) => {
     try {
       const resp = await searchProducts(query);
       return resp;
-    } catch  {
+    } catch {
       return rejectWithValue("failed to search products.");
     }
-  }
+  },
 );
-
-
 
 const productSlice = createSlice({
   name: "product",
   initialState,
-  reducers: {
-    
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getProduct.pending, (state) => {
@@ -105,13 +93,12 @@ const productSlice = createSlice({
         state.status = "succeeded";
         const payload = action.payload?.data ?? action.payload;
         state.product = payload?.product ?? null;
-
       })
       .addCase(getProduct.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload as string;
       });
-  }
+  },
 });
 
 export default productSlice.reducer;

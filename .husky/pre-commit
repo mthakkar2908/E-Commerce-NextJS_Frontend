@@ -1,22 +1,33 @@
 #!/usr/bin/env sh
-. "$(dirname "$0")/_/h"
+echo '🏗️👷 Styling, testing and building your project before committing'
 
-# Run lint & build on commit only for the target branch (override with TARGET_BRANCH)
-TARGET_BRANCH=${TARGET_BRANCH:-main}
+# Check Prettier Standards
+yarn format ||
+(
+    echo '🤢🤮🤢🤮 Your styling looks disgusting. 🤢🤮🤢🤮
+            Prettier Check Failed.';
+    false;
+)
 
-CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+echo '😎😎😎... Alright... Code looks good to me... Trying to build now. 😎😎😎'
 
-if [ "${CURRENT_BRANCH}" != "${TARGET_BRANCH}" ]; then
-  echo "Skipping pre-commit checks: current branch '${CURRENT_BRANCH}' != '${TARGET_BRANCH}'"
-  exit 0
-fi
+# Unit Test Case
+# yarn tests ||
+# (
+#     echo '🚀 🚀 😠 Teset Case is failed  😠 🚀 🚀
+#             Next Test: View the errors above to see why. 
+#     '
+#     false;
+# )
 
-echo "Starting pre-commit checks on branch '${CURRENT_BRANCH}'..."
-echo "Running lint..."
-yarn lint || { echo 'yarn lint failed — aborting commit.'; exit 1; }
+# Create Local Build
+yarn build ||
+(
+    echo '❌👷🔨❌ Better call Bob... Because your build failed ❌👷🔨❌
+            Next build failed: View the errors above to see why. 
+    '
+    false;
+)
 
-echo "Lint passed. Starting build (this may take a while)..."
-yarn build || { echo 'yarn build failed — aborting commit.'; exit 1; }
-
-echo 'Pre-commit checks passed — continuing commit.'
-exit 0
+# If everything passes... Now we can commit
+echo '✅✅✅✅ You win this time... I am committing this now. ✅✅✅✅'
