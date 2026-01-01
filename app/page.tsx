@@ -10,9 +10,9 @@ export default function Home() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const session = getSession(); // get data from sessionStorage
+    const session = getSession();
     if (session) {
-      dispatch(setSessionFromStorage(session)); // put it back in Redux
+      dispatch(setSessionFromStorage(session));
     }
   }, [dispatch]);
   return (

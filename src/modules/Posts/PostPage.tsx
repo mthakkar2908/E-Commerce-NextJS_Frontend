@@ -20,7 +20,6 @@ const PostPage = () => {
   useEffect(() => {
     async function fetchPosts() {
       const response = await dispatch(GetPosts());
-      console.log("Fetched posts:", response);
       setPostData(response.payload as Post[]);
     }
 

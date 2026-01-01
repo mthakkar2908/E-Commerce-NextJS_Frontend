@@ -21,7 +21,8 @@ import {
 import { Heart } from "lucide-react";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 // Local interfaces for typing
 export interface ProductItem {
@@ -49,9 +50,10 @@ const MainDashboard = () => {
 
   const [searchValue, setSearchValue] = useState<string>("");
 
+  const hasRefCurrent = useRef<boolean>(false);
+
   const debounce = useDebounce(searchValue, 500);
 
-  console.log("MainDashboard render - user:", auth.user);
   useEffect(() => {
     if (auth.status === "idle" && auth.user === null) return;
     if (!auth.user) {
@@ -67,26 +69,38 @@ const MainDashboard = () => {
         ).unwrap();
         setProductData(response as ProductItem[]);
       } catch (error) {
+        toast.error((error as string) ?? "Failed to fetch filtered products");
         console.error("Failed to fetch filtered products:", error);
       }
     }
 
-      fetchFiltredData();
+    fetchFiltredData();
   }, [debounce, dispatch]);
 
   useEffect(() => {
     const fetchProduct = async (): Promise<void> => {
       try {
+        if (hasRefCurrent.current) return;
+
+        hasRefCurrent.current = true;
         const response = await dispatch(getProduct()).unwrap();
-        console.log("Fetched products:", response);
         setProductData(response as ProductItem[]);
+        toast.success("Produt Fetched Successfully.", {
+          duration: 2000,
+          position: "top-center",
+          style: {
+            background: "#101010",
+            color: "#fff"
+          }
+        });
       } catch (err) {
+        toast.error("Failed to fetch product.");
         console.error("Failed to fetch product:", err);
       }
     };
 
     fetchProduct();
-  }, []);
+  }, [dispatch]);
 
   const updateFavourite = async (id?: string) => {
     if (!id) return;
@@ -110,6 +124,7 @@ const MainDashboard = () => {
 
   return (
     <div>
+      <Toaster />
       {auth?.user ? (
         <>
           <h1 className='text-black text-2xl font-bold flex items-center justify-center my-5'>

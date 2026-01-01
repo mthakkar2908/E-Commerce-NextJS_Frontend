@@ -21,7 +21,6 @@ function createClient(): AxiosInstance {
     (config: InternalAxiosRequestConfig) => {
       try {
         const session = getSession();
-        console.log("Session in client interceptor:", session);
         const token = session?.user?.token ?? session?.accessToken;
 
         if (token) {
