@@ -10,11 +10,18 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:7000";
 function createClient(): AxiosInstance {
   const instance = axios.create({
     baseURL: BASE_URL,
-    headers: {
-      "Content-Type": "application/json",
-    },
     withCredentials: false,
   });
+
+  instance.interceptors.request.use((config) => {
+  if (config.data instanceof FormData) {
+    delete config.headers["Content-Type"];
+  } else {
+    config.headers["Content-Type"] = "application/json";
+  }
+
+  return config;
+});
 
   instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     try {

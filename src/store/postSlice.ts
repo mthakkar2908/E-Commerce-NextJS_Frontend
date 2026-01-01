@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { getPosts } from "../api/authApi";
+import { createPost, deletePost, getPosts, updateFav } from "../api/authApi";
 
 export interface Post {
-  _id: number;
+  _id:  string;
   name: string;
   post_description: string;
+  imageUrl: string;
   email: string;
   user: string;
 }
@@ -24,13 +25,38 @@ const initialState: PostState = {
 };
 
 export const GetPosts = createAsyncThunk(
-  "product/getPosts",
+  "post/getPosts",
   async (_, { rejectWithValue }) => {
     try {
       const resp = await getPosts();
       return resp;
     } catch {
       return rejectWithValue("Posts not fetched.");
+    }
+  },
+);
+
+export const CreatePost = createAsyncThunk(
+  "post/CreatePost",
+  async (formData: FormData, { rejectWithValue }) => {
+    try {
+      const resp = await createPost(formData);
+      return resp;
+    } catch {
+      return rejectWithValue("failed to create Post.");
+    }
+  },
+);
+
+
+export const DeletePost = createAsyncThunk(
+  "post/DeletePost",
+  async (postId : string, { rejectWithValue }) => {
+    try {
+      const resp = await deletePost(postId);
+      return resp;
+    } catch {
+      return rejectWithValue("failed to delete Post.");
     }
   },
 );

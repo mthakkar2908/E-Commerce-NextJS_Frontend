@@ -24,6 +24,18 @@ export function getPosts() {
   return api.get("/posts");
 }
 
+export function createPost(formData: FormData) {
+  return api.post("/posts", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
+
+export function deletePost(postId : string){
+  return api.delete(`posts/deletePost/${postId}`);
+}
+
 export const authApi = {
   login: (creds: { email: string; password: string }) => login(creds),
   me: () => api.get("/auth/me"),
