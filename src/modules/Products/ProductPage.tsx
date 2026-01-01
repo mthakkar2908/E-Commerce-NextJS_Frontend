@@ -16,6 +16,7 @@ import { useParams } from "next/navigation";
 import { GetFavourite, GetProductsById } from "@/src/store/productSlice";
 import { useAppDispatch } from "@/src/store";
 import LoadingWrapper from "@/src/common/LoadingWrapper";
+import toast from "react-hot-toast";
 
 const ProductPage = () => {
   const { productId } = useParams<{ productId: string }>();
@@ -31,6 +32,7 @@ const ProductPage = () => {
         setLoading(true);
         const response = await dispatch(GetProductsById(productId)).unwrap();
         setProduct(response as ProductItem);
+        toast.success("Product loaded successfully");
       } catch (error) {
         console.error("Failed to fetch product by ID:", error);
       } finally {
