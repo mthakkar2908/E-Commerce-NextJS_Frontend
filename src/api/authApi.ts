@@ -32,7 +32,7 @@ export function createPost(formData: FormData) {
   });
 }
 
-export function UpdatePostForId(formData: FormData , postId : string) {
+export function UpdatePostForId(formData: FormData, postId: string) {
   return api.post(`/posts/update/${postId}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
