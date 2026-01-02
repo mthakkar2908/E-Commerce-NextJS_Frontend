@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { getProducts, getUserById, login as loginApi, updateUser } from "../api/authApi";
+import {
+  getProducts,
+  getUserById,
+  login as loginApi,
+  updateUser,
+} from "../api/authApi";
 import { saveSession, clearSession } from "../utils/session";
 
 export interface AuthState {
@@ -44,10 +49,9 @@ export const getProduct = createAsyncThunk(
   },
 );
 
-
 export const GetUserById = createAsyncThunk(
   "auth/GetUserById",
-  async (userId : string, { rejectWithValue }) => {
+  async (userId: string, { rejectWithValue }) => {
     try {
       const resp = await getUserById(userId);
       return resp;
@@ -56,7 +60,6 @@ export const GetUserById = createAsyncThunk(
     }
   },
 );
-
 
 export const UpdateUser = createAsyncThunk(
   "Auth/UpdateUser",
