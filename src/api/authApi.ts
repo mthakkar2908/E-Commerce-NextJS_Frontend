@@ -32,6 +32,18 @@ export function createPost(formData: FormData) {
   });
 }
 
+export function updateUser(formData: FormData , userId : string){
+  return api.post(`/users/updateProdile/${userId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
+
+export function getUserById(userId : string){
+  return api.get(`/users/${userId}`);
+}
+
 export function UpdatePostForId(formData: FormData, postId: string) {
   return api.post(`/posts/update/${postId}`, formData, {
     headers: {

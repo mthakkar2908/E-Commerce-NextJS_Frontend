@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { getProducts, login as loginApi } from "../api/authApi";
+import { getProducts, getUserById, login as loginApi, updateUser } from "../api/authApi";
 import { saveSession, clearSession } from "../utils/session";
 
 export interface AuthState {
@@ -40,6 +40,35 @@ export const getProduct = createAsyncThunk(
       return resp;
     } catch {
       return rejectWithValue("Products not fetched.");
+    }
+  },
+);
+
+
+export const GetUserById = createAsyncThunk(
+  "auth/GetUserById",
+  async (userId : string, { rejectWithValue }) => {
+    try {
+      const resp = await getUserById(userId);
+      return resp;
+    } catch {
+      return rejectWithValue("failed to fetched userData");
+    }
+  },
+);
+
+
+export const UpdateUser = createAsyncThunk(
+  "Auth/UpdateUser",
+  async (
+    params: { formData: FormData; userId: string },
+    { rejectWithValue },
+  ) => {
+    try {
+      const resp = await updateUser(params?.formData, params?.userId);
+      return resp;
+    } catch {
+      return rejectWithValue("failed to Update a user.");
     }
   },
 );
