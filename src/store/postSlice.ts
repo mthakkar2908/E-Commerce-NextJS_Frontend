@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { createPost, deletePost, getPosts, updateFav } from "../api/authApi";
+import {
+  createPost,
+  deletePost,
+  getPosts,
+  UpdatePostForId
+} from "../api/authApi";
 
 export interface Post {
   _id: string;
@@ -21,7 +26,7 @@ const initialState: PostState = {
   Post: null,
   token: null,
   status: "idle",
-  error: null,
+  error: null
 };
 
 export const GetPosts = createAsyncThunk(
@@ -33,7 +38,7 @@ export const GetPosts = createAsyncThunk(
     } catch {
       return rejectWithValue("Posts not fetched.");
     }
-  },
+  }
 );
 
 export const CreatePost = createAsyncThunk(
@@ -45,7 +50,19 @@ export const CreatePost = createAsyncThunk(
     } catch {
       return rejectWithValue("failed to create Post.");
     }
-  },
+  }
+);
+
+export const UpdatePost = createAsyncThunk(
+  "post/UpdatePost",
+  async (params: { formData: FormData; postId: string }, { rejectWithValue }) => {
+    try {
+      const resp = await UpdatePostForId(params?.formData , params?.postId);
+      return resp;
+    } catch {
+      return rejectWithValue("failed to Update a Post.");
+    }
+  }
 );
 
 export const DeletePost = createAsyncThunk(
@@ -57,7 +74,7 @@ export const DeletePost = createAsyncThunk(
     } catch {
       return rejectWithValue("failed to delete Post.");
     }
-  },
+  }
 );
 
 const postSlice = createSlice({
@@ -80,7 +97,7 @@ const postSlice = createSlice({
         state.status = "failed";
         state.error = action.payload as string;
       });
-  },
+  }
 });
 
 export default postSlice.reducer;

@@ -7,7 +7,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
 import LoadingWrapper from "@/src/common/LoadingWrapper";
 import useDebounce from "@/src/common/useDebounce";
@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from "@/src/store";
 import {
   GetFavourite,
   getProduct,
-  searchProductsByQuery,
+  searchProductsByQuery
 } from "@/src/store/productSlice";
 import { Heart } from "lucide-react";
 
@@ -65,7 +65,7 @@ const MainDashboard = () => {
     async function fetchFiltredData() {
       try {
         const response = await dispatch(
-          searchProductsByQuery(debounce),
+          searchProductsByQuery(debounce)
         ).unwrap();
         setProductData(response as ProductItem[]);
       } catch (error) {
@@ -90,8 +90,8 @@ const MainDashboard = () => {
           position: "top-center",
           style: {
             background: "#101010",
-            color: "#fff",
-          },
+            color: "#fff"
+          }
         });
       } catch (err) {
         toast.error("Failed to fetch product.");
@@ -113,9 +113,9 @@ const MainDashboard = () => {
           ? prev.map((product) =>
               product._id === id
                 ? { ...product, is_fav: !product.is_fav }
-                : product,
+                : product
             )
-          : prev,
+          : prev
       );
     } catch (error) {
       console.error("Failed to update favourite:", error);
@@ -123,38 +123,38 @@ const MainDashboard = () => {
   };
 
   return (
-    <div>
+    <div className="w-full mx-10 my-10">
       <Toaster />
       {auth?.user ? (
-        <>
-          <h1 className="text-black text-2xl font-bold flex items-center justify-center my-5">
+        <div>
+          <h1 className='text-black text-2xl font-bold flex items-center justify-center my-5'>
             Your Products
           </h1>
           <input
-            type="text"
+            type='text'
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
-            placeholder="Search Product here.."
-            className="h-6 text-[#212121] px-2 py-6 w-full mb-4 flex justify-center items-center border border-black rounded-xl"
+            placeholder='Search Product here..'
+            className='h-6 text-[#212121] px-2 py-6 w-full mb-4 flex justify-center items-center border border-black rounded-xl'
           />
-          <div className="grid grid-cols-4 gap-4">
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3'>
             {productData ? (
               productData.map((product) => (
                 <Card
                   key={product?._id}
-                  className="w-full max-w-sm shadow-[0_-4px_10px_-2px_gray,0_4px_10px_-2px_orange]"
+                  className='w-full max-w-sm shadow-[0_-4px_10px_-2px_gray,0_4px_10px_-2px_orange]'
                 >
                   <CardHeader>
                     <CardTitle>{product.name}</CardTitle>
                     <CardDescription>{product.about_product}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex justify-between">
+                    <div className='flex justify-between'>
                       <div>
-                        <p className="mb-4 text-sm text-gray-600">
+                        <p className='mb-4 text-sm text-gray-600'>
                           Price : ${product.price}
                         </p>
-                        <p className="text-sm text-gray-600">
+                        <p className='text-sm text-gray-600'>
                           In Stock: {product.quan}
                         </p>
                       </div>
@@ -162,27 +162,27 @@ const MainDashboard = () => {
                         {product.is_fav === false || !product.is_fav ? (
                           <Heart
                             onClick={() => updateFavourite(product?._id)}
-                            className="text-red-500"
+                            className='text-red-500'
                           />
                         ) : (
                           <Heart
                             onClick={() => updateFavourite(product?._id)}
-                            className="text-red-500 fill-red-500"
+                            className='text-red-500 fill-red-500'
                           />
                         )}
                       </div>
                     </div>
                   </CardContent>
-                  <CardFooter className="flex-col gap-2">
-                    <Button type="submit" className="w-full">
+                  <CardFooter className='flex-col gap-2'>
+                    <Button type='submit' className='w-full'>
                       Add to cart
                     </Button>
                     <Button
                       onClick={() => {
                         router.push("products/" + product?._id);
                       }}
-                      variant="outline"
-                      className="w-full text-white"
+                      variant='outline'
+                      className='w-full text-white'
                     >
                       Go to the product
                     </Button>
@@ -193,7 +193,7 @@ const MainDashboard = () => {
               <p>No products available.</p>
             )}
           </div>
-        </>
+        </div>
       ) : (
         <div>
           <LoadingWrapper />

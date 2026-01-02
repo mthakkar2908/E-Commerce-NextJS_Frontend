@@ -32,6 +32,14 @@ export function createPost(formData: FormData) {
   });
 }
 
+export function UpdatePostForId(formData: FormData , postId : string) {
+  return api.post(`/posts/update/${postId}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+}
+
 export function deletePost(postId: string) {
   return api.delete(`posts/deletePost/${postId}`);
 }

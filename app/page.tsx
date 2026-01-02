@@ -16,7 +16,7 @@ export default function Home() {
     }
   }, [dispatch]);
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+    <div className='flex min-h-screen w-full  items-center justify-center bg-zinc-50 font-sans dark:bg-black'>
       <MainDashboard />
     </div>
   );
