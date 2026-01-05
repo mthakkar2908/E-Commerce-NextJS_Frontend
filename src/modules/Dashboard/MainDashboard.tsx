@@ -91,7 +91,7 @@ const MainDashboard = () => {
             color: "#fff",
           },
         });
-      } catch  {
+      } catch {
         toast.error("Failed to fetch product.");
       }
     };
