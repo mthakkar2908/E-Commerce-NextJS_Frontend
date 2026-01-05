@@ -114,21 +114,21 @@ const authSlice = createSlice({
         state.status = "failed";
         state.error = action.payload as string;
       })
-       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-       .addCase(UpdateUser.fulfilled, (state, action: PayloadAction<any>) => {
-      const payload = action.payload?.data ?? action.payload;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .addCase(UpdateUser.fulfilled, (state, action: PayloadAction<any>) => {
+        const payload = action.payload?.data ?? action.payload;
 
-      if (state.user && payload?.user) {
-        state.user = {
-          ...state.user,
-          ...payload.user,
-        };
-      }
-      saveSession({
-        user: state.user,
-        token: state.token,
+        if (state.user && payload?.user) {
+          state.user = {
+            ...state.user,
+            ...payload.user,
+          };
+        }
+        saveSession({
+          user: state.user,
+          token: state.token,
+        });
       });
-    });
   },
 });
 

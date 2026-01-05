@@ -1,30 +1,26 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import {
-  deleteOrderById,
-    getOrders,
-    getOrdersById
-} from "../api/authApi";
+import { deleteOrderById, getOrders, getOrdersById } from "../api/authApi";
 
 export interface OrderResponse {
   _id: string;
   product_id: {
-    _id : string,
-    name : string,
-    about_product : string,
-    price : number,
-    quan : number,
-    is_fav: boolean,
+    _id: string;
+    name: string;
+    about_product: string;
+    price: number;
+    quan: number;
+    is_fav: boolean;
   };
   user_id: string;
   user_first_name: string;
   user_last_name: string;
   product_name: string;
-  email: string,
-  status : string,
-  address : string,
-  mobile_no : number,
-  total_price : number,
-  product_quan: number
+  email: string;
+  status: string;
+  address: string;
+  mobile_no: number;
+  total_price: number;
+  product_quan: number;
 }
 
 export interface OrderState {
@@ -56,7 +52,7 @@ export const GetOrders = createAsyncThunk(
 
 export const GetOrdersByID = createAsyncThunk(
   "order/GetOrdersByID",
-  async (orderId : string, { rejectWithValue }) => {
+  async (orderId: string, { rejectWithValue }) => {
     try {
       const resp = await getOrdersById(orderId);
       return resp;
@@ -68,7 +64,7 @@ export const GetOrdersByID = createAsyncThunk(
 
 export const DeleteOrderById = createAsyncThunk(
   "order/DeleteOrderById",
-  async (orderId : string, { rejectWithValue }) => {
+  async (orderId: string, { rejectWithValue }) => {
     try {
       const resp = await deleteOrderById(orderId);
       return resp;
@@ -77,8 +73,6 @@ export const DeleteOrderById = createAsyncThunk(
     }
   },
 );
-
-
 
 const orderSlice = createSlice({
   name: "order",

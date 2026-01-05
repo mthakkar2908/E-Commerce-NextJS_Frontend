@@ -60,11 +60,11 @@ export function getOrders() {
   return api.get("/orders");
 }
 
-export function getOrdersById(orderId : string){
+export function getOrdersById(orderId: string) {
   return api.get(`/orders/${orderId}`);
 }
 
-export function deleteOrderById(orderId : string){
+export function deleteOrderById(orderId: string) {
   return api.delete(`/orders/deleteOrder/${orderId}`);
 }
 

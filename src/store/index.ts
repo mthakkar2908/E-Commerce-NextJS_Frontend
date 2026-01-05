@@ -10,7 +10,7 @@ export const store = configureStore({
     auth: authReducer,
     product: productReducer,
     post: postReducer,
-    order: orderReducer
+    order: orderReducer,
   },
 });
 
