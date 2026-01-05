@@ -4,7 +4,7 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardHeader,
+  CardHeader
 } from "@/components/ui/card";
 import { DeleteDialog } from "@/src/common/DeleteDialog";
 import { useAppDispatch } from "@/src/store";
@@ -73,12 +73,12 @@ const Order = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <Card className="max-w-90 w-full">
+    <div className='flex justify-center items-center h-screen'>
+      <Card className='max-w-90 w-full'>
         <CardHeader>
-          <div className="flex justify-between">
+          <div className='flex justify-between'>
             <span>{order?.product_name}</span>
-            <span className="bg-green-200 border border-green-600 px-1.5 py-1.5 rounded-2xl text-sm">
+            <span className='bg-green-200 border border-green-600 px-1.5 py-1.5 rounded-2xl text-sm'>
               {order?.status}
             </span>
           </div>
@@ -86,7 +86,7 @@ const Order = () => {
         <CardDescription>{order?.product_id?.about_product}</CardDescription>
 
         <CardContent>
-          <div className="flex flex-col">
+          <div className='flex flex-col'>
             <span>
               <b> UserName:</b> {order?.user_first_name} {order?.user_last_name}
             </span>
@@ -104,12 +104,12 @@ const Order = () => {
             </span>
           </div>
 
-          <div className="flex justify-end">
+          <div className='flex justify-end'>
             <Button
               onClick={() => {
                 setHandleOpen(true);
               }}
-              className="text-white hover:border border-black cursor-pointer"
+              className='text-white hover:border border-black cursor-pointer'
               variant={"outline"}
             >
               <Trash2 />
@@ -118,10 +118,10 @@ const Order = () => {
               open={handleOpen}
               onOpenChange={setHandleOpen}
               onConfirm={() => handleDeleteOrder(String(order?._id))}
-              title="Remove Order"
-              description="Are you sure you want to remove this order ? This action cannot be undone."
-              confirmText="Remove order"
-              cancelText="Cancel"
+              title='Remove Order'
+              description='Are you sure you want to remove this order ? This action cannot be undone.'
+              confirmText='Remove order'
+              cancelText='Cancel'
               isLoading={delOrderLoading}
               isDangerous={true}
             />{" "}
