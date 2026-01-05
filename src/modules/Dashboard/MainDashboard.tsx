@@ -55,8 +55,7 @@ const MainDashboard = () => {
   const debounce = useDebounce(searchValue, 500);
 
   useEffect(() => {
-    if (auth.status === "idle" && auth.user === null) return;
-    if (!auth.user) {
+    if (auth.status === "idle" && auth.user === null) {
       router.push("/login");
     }
   }, [auth.user, auth.status, router]);
@@ -70,7 +69,6 @@ const MainDashboard = () => {
         setProductData(response as ProductItem[]);
       } catch (error) {
         toast.error((error as string) ?? "Failed to fetch filtered products");
-        console.error("Failed to fetch filtered products:", error);
       }
     }
 
@@ -93,9 +91,8 @@ const MainDashboard = () => {
             color: "#fff",
           },
         });
-      } catch (err) {
+      } catch  {
         toast.error("Failed to fetch product.");
-        console.error("Failed to fetch product:", err);
       }
     };
 
