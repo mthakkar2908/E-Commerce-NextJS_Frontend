@@ -27,7 +27,7 @@ const UserProfile = () => {
   const initialValues = {
     name: "",
     email: "",
-    profile_image: "",
+    profile_image: ""
   };
 
   const [formData, setFormData] = useState(initialValues);
@@ -35,13 +35,10 @@ const UserProfile = () => {
   const [isPreview, setIsPreview] = useState(false);
   const [file, setFile] = useState<File | null>(null);
 
-  console.log("usere is : ", user);
-
   const fetchUserData = async () => {
     try {
       setLoading(true);
       const response = await dispatch(GetUserById(user.userId));
-      console.log("Response is :", response);
       setFormData(response?.payload as Response);
       setIsPreview(false);
     } catch (error) {
@@ -56,15 +53,27 @@ const UserProfile = () => {
     fetchUserData();
   }, [user?.userId, dispatch]);
 
+  useEffect(() => {
+    if (!user) return;
+
+    setFormData({
+      name: user.name ?? "",
+      email: user.email ?? "",
+      profile_image: user.image ?? ""
+    });
+
+    setIsPreview(false);
+  }, [user]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }));
   };
   const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const files = Array.from(event.target.files ?? []);
     if (files.length === 0) {
@@ -75,14 +84,14 @@ const UserProfile = () => {
       `Uploading ${files.length} ${files.length === 1 ? "memory" : "memories"}...`,
       {
         position: "top-center",
-        style: { borderRadius: "8px", background: "#333", color: "#fff" },
-      },
+        style: { borderRadius: "8px", background: "#333", color: "#fff" }
+      }
     );
 
     const results = {
       success: 0,
       failed: 0,
-      skipped: 0,
+      skipped: 0
     };
 
     const uploadPromises = files.map(async (file) => {
@@ -95,12 +104,12 @@ const UserProfile = () => {
         results.skipped++;
         toast.error(
           `Invalid image format for ${file.name}. Supported formats: ${imageExtensions.join(
-            ", ",
+            ", "
           )}`,
           {
             position: "top-center",
-            style: { borderRadius: "8px", background: "#333", color: "#fff" },
-          },
+            style: { borderRadius: "8px", background: "#333", color: "#fff" }
+          }
         );
         return null;
       }
@@ -111,8 +120,8 @@ const UserProfile = () => {
           `Image size exceeds 30MB for ${file.name}. Please select a smaller image.`,
           {
             position: "top-center",
-            style: { borderRadius: "8px", background: "#333", color: "#fff" },
-          },
+            style: { borderRadius: "8px", background: "#333", color: "#fff" }
+          }
         );
         return null;
       }
@@ -123,7 +132,7 @@ const UserProfile = () => {
 
         setFormData((prev) => ({
           ...prev,
-          profile_image: previewUrl,
+          profile_image: previewUrl
         }));
         results.success++;
       } catch {
@@ -151,7 +160,7 @@ const UserProfile = () => {
               results.failed > 0 ? `${results.failed} memories failed` : "",
               results.skipped > 0
                 ? `${results.skipped} memories skipped due to validation`
-                : "",
+                : ""
             ]
               .filter(Boolean)
               .join(", ");
@@ -160,20 +169,20 @@ const UserProfile = () => {
         toast.success(message, {
           position: "top-center",
           duration: 3000,
-          style: { borderRadius: "8px", background: "#333", color: "#fff" },
+          style: { borderRadius: "8px", background: "#333", color: "#fff" }
         });
       } else if (results.failed > 0 || results.skipped > 0) {
         toast.error(message, {
           position: "top-center",
           duration: 3000,
-          style: { borderRadius: "8px", background: "#333", color: "#fff" },
+          style: { borderRadius: "8px", background: "#333", color: "#fff" }
         });
       }
     } catch (error) {
       toast.dismiss(loadingToast);
       toast.error((error as string) ?? "Upload process failed", {
         position: "top-center",
-        style: { borderRadius: "8px", background: "#333", color: "#fff" },
+        style: { borderRadius: "8px", background: "#333", color: "#fff" }
       });
     }
 
@@ -193,15 +202,18 @@ const UserProfile = () => {
       await dispatch(
         UpdateUser({
           formData: apiFormData,
-          userId: user.userId,
-        }),
+          userId: user.userId
+        })
       )
         .unwrap()
         .then(() => {
           setIsPreview(false);
           setFile(null);
-          fetchUserData();
-          toast.success("User Profile Upated..");
+          toast.success("User Profile Updated..", {
+            position: "top-center",
+            duration: 3000,
+            style: { borderRadius: "8px", background: "#333", color: "#fff" }
+          });
         });
     } catch (error) {
       toast.error((error as string) ?? "failed to update a user");
@@ -215,35 +227,35 @@ const UserProfile = () => {
   if (!user?.token) return null;
 
   return (
-    <div className="mx-10 my-10 h-auto bg-white text-black dark:text-white grid grid-cols-2">
+    <div className='mx-10 my-10 h-auto bg-white text-black dark:text-white grid grid-cols-2'>
       <Toaster />
-      <div className="flex-1 bg-gray-300 flex justify-center">
-        <div className="relative mt-4 mb-4">
+      <div className='flex-1 bg-gray-300 flex justify-center'>
+        <div className='relative mt-4 mb-4'>
           <img
             src={
               !isPreview
                 ? `${process.env.NEXT_PUBLIC_FRONTEND_URL}${formData?.profile_image}`
                 : `${formData?.profile_image}`
             }
-            alt="file"
-            className="w-60 h-50 rounded-2xl"
+            alt='file'
+            className='w-60 h-50 rounded-2xl'
           />
 
           <input
-            type="file"
-            accept="image/*"
-            className="hidden"
+            type='file'
+            accept='image/*'
+            className='hidden'
             onChange={handleFileChange}
-            id="file-upload"
+            id='file-upload'
             multiple
           />
 
           {!isPreview ? (
             <label
-              htmlFor="file-upload"
-              className="cursor-pointer absolute bottom-10 -right-4 bg-white p-2 rounded-full shadow-lg"
+              htmlFor='file-upload'
+              className='cursor-pointer absolute bottom-10 -right-4 bg-white p-2 rounded-full shadow-lg'
             >
-              <Edit2 className="w-5 h-5" />
+              <Edit2 className='w-5 h-5' />
             </label>
           ) : (
             <Button
@@ -252,45 +264,45 @@ const UserProfile = () => {
                 setFile(null);
                 fetchUserData();
               }}
-              className="cursor-pointer absolute bottom-10 -right-4 bg-white hover:bg-white p-2 rounded-full shadow-lg"
+              className='cursor-pointer absolute bottom-10 -right-4 bg-white hover:bg-white p-2 rounded-full shadow-lg'
             >
-              <X className="w-5 h-5 text-black " />
+              <X className='w-5 h-5 text-black ' />
             </Button>
           )}
         </div>
       </div>
 
-      <div className="flex-1 bg-gray-400 flex flex-col justify-center items-center">
+      <div className='flex-1 bg-gray-400 flex flex-col justify-center items-center'>
         <div>
-          <h1 className="text-2xl mb-4 mt-4">Your Details</h1>
+          <h1 className='text-2xl mb-4 mt-4'>Your Details</h1>
           <div>
-            <Label className="mt-2 mb-2">
-              Name <span className="text-red-600">*</span>
+            <Label className='mt-2 mb-2'>
+              Name <span className='text-red-600'>*</span>
             </Label>
             <Input
-              id="name"
-              name="name"
-              type="text"
+              id='name'
+              name='name'
+              type='text'
               value={formData?.name}
               onChange={handleInputChange}
-              placeholder="Enter your Name"
-              className="p-2 rounded-xl mt-2 mb-2 border"
+              placeholder='Enter your Name'
+              className='p-2 rounded-xl mt-2 mb-2 border'
             />
 
-            <Label className="mt-2 mb-2">
-              Email <span className="text-red-600">*</span>
+            <Label className='mt-2 mb-2'>
+              Email <span className='text-red-600'>*</span>
             </Label>
             <Input
-              id="email"
-              name="email"
-              type="email"
+              id='email'
+              name='email'
+              type='email'
               value={formData?.email}
               onChange={handleInputChange}
-              placeholder="Enter your Email"
-              className="p-2 rounded-xl mt-2 border"
+              placeholder='Enter your Email'
+              className='p-2 rounded-xl mt-2 border'
             />
           </div>
-          <div className="flex items-center justify-center  mt-4 mb-4 ">
+          <div className='flex items-center justify-center  mt-4 mb-4 '>
             <Button onClick={handleUpdateUser}>Update Profile</Button>
           </div>
         </div>

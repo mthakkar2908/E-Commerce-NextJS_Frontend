@@ -7,7 +7,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -19,7 +19,7 @@ import {
   DeletePost,
   GetPosts,
   Post,
-  UpdatePost,
+  UpdatePost
 } from "@/src/store/postSlice";
 import { Edit2, Plus, Trash2, Upload } from "lucide-react";
 import React, { useEffect } from "react";
@@ -47,7 +47,7 @@ const PostPage = () => {
     name: "",
     post_description: "",
     email: "",
-    image: "",
+    image: ""
   };
   const [formData, setFormData] = React.useState(initialValues);
 
@@ -65,7 +65,7 @@ const PostPage = () => {
   };
 
   const convertImageUrlToFile = async (
-    imageUrl: string,
+    imageUrl: string
   ): Promise<File | null> => {
     try {
       let absoluteUrl = imageUrl;
@@ -83,7 +83,7 @@ const PostPage = () => {
       const fileName = imageUrl.split("/").pop() || "image.jpg";
 
       const file = new File([blob], fileName, {
-        type: blob.type || "image/jpeg",
+        type: blob.type || "image/jpeg"
       });
 
       return file;
@@ -101,7 +101,7 @@ const PostPage = () => {
       name: post.name,
       post_description: post.post_description,
       email: post.email,
-      image: post.imageUrl ?? "",
+      image: post.imageUrl ?? ""
     });
     if (post?.imageUrl) {
       try {
@@ -134,7 +134,7 @@ const PostPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const files = Array.from(event.target.files ?? []);
     if (files.length === 0) {
@@ -144,7 +144,7 @@ const PostPage = () => {
     if (files.length + selectedImages.length > 5) {
       toast.error("You can upload a maximum of 5 images.", {
         position: "top-center",
-        style: { borderRadius: "8px", background: "#333", color: "#fff" },
+        style: { borderRadius: "8px", background: "#333", color: "#fff" }
       });
       return;
     }
@@ -153,14 +153,14 @@ const PostPage = () => {
       `Uploading ${files.length} ${files.length === 1 ? "memory" : "memories"}...`,
       {
         position: "top-center",
-        style: { borderRadius: "8px", background: "#333", color: "#fff" },
-      },
+        style: { borderRadius: "8px", background: "#333", color: "#fff" }
+      }
     );
 
     const results = {
       success: 0,
       failed: 0,
-      skipped: 0,
+      skipped: 0
     };
 
     const uploadPromises = files.map(async (file) => {
@@ -173,12 +173,12 @@ const PostPage = () => {
         results.skipped++;
         toast.error(
           `Invalid image format for ${file.name}. Supported formats: ${imageExtensions.join(
-            ", ",
+            ", "
           )}`,
           {
             position: "top-center",
-            style: { borderRadius: "8px", background: "#333", color: "#fff" },
-          },
+            style: { borderRadius: "8px", background: "#333", color: "#fff" }
+          }
         );
         return null;
       }
@@ -189,8 +189,8 @@ const PostPage = () => {
           `Image size exceeds 30MB for ${file.name}. Please select a smaller image.`,
           {
             position: "top-center",
-            style: { borderRadius: "8px", background: "#333", color: "#fff" },
-          },
+            style: { borderRadius: "8px", background: "#333", color: "#fff" }
+          }
         );
         return null;
       }
@@ -225,7 +225,7 @@ const PostPage = () => {
               results.failed > 0 ? `${results.failed} memories failed` : "",
               results.skipped > 0
                 ? `${results.skipped} memories skipped due to validation`
-                : "",
+                : ""
             ]
               .filter(Boolean)
               .join(", ");
@@ -234,20 +234,20 @@ const PostPage = () => {
         toast.success(message, {
           position: "top-center",
           duration: 3000,
-          style: { borderRadius: "8px", background: "#333", color: "#fff" },
+          style: { borderRadius: "8px", background: "#333", color: "#fff" }
         });
       } else if (results.failed > 0 || results.skipped > 0) {
         toast.error(message, {
           position: "top-center",
           duration: 3000,
-          style: { borderRadius: "8px", background: "#333", color: "#fff" },
+          style: { borderRadius: "8px", background: "#333", color: "#fff" }
         });
       }
     } catch (error) {
       toast.dismiss(loadingToast);
       toast.error((error as string) ?? "Upload process failed", {
         position: "top-center",
-        style: { borderRadius: "8px", background: "#333", color: "#fff" },
+        style: { borderRadius: "8px", background: "#333", color: "#fff" }
       });
     }
 
@@ -284,15 +284,15 @@ const PostPage = () => {
             fetchPosts();
             toast.success("Post created successfully!", {
               position: "top-center",
-              style: { borderRadius: "8px", background: "#333", color: "#fff" },
+              style: { borderRadius: "8px", background: "#333", color: "#fff" }
             });
           });
       } else if (mode === "Edit" && editingPost) {
         await dispatch(
           UpdatePost({
             formData: apiFormData,
-            postId: editingPost?._id,
-          }),
+            postId: editingPost?._id
+          })
         )
           .unwrap()
           .then(() => {
@@ -314,7 +314,7 @@ const PostPage = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }));
   };
 
@@ -331,8 +331,8 @@ const PostPage = () => {
             style: {
               borderRadius: "8px",
               background: "#333",
-              color: "#fff",
-            },
+              color: "#fff"
+            }
           });
         })
         .catch((err) => {
@@ -350,23 +350,23 @@ const PostPage = () => {
   };
 
   return (
-    <div className="mx-10 my-10 bg-white px-10 py-10 overflow-auto max-w-500px">
+    <div className='mx-10 my-10 bg-white px-10 py-10 overflow-auto max-w-500px'>
       <Toaster />
-      <div className="flex justify-end mb-2">
+      <div className='flex justify-end mb-2'>
         <Button onClick={openAddDialog}>
-          <Plus className="h-4 w-4" />
+          <Plus className='h-4 w-4' />
           Add Post
         </Button>
       </div>
-      <div className="flex items-center justify-center">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+      <div className='flex items-center justify-center'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4'>
           {postData.map((post) => (
             <Card
               key={post._id}
-              className="w-full max-w-2xl shadow-[0_-4px_10px_-2px_gray,0_4px_10px_-2px_orange]"
+              className='w-full max-w-2xl shadow-[0_-4px_10px_-2px_gray,0_4px_10px_-2px_orange]'
             >
               <CardHeader>
-                <CardTitle className="text-lg sm:text-xl">
+                <CardTitle className='text-lg sm:text-xl'>
                   {post.name}
                 </CardTitle>
               </CardHeader>
@@ -375,47 +375,47 @@ const PostPage = () => {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={`${process.env.NEXT_PUBLIC_FRONTEND_URL}${post?.imageUrl}`}
-                    alt="Uploaded Post"
-                    className="max-w-sm w-full rounded-md"
+                    alt='Uploaded Post'
+                    className='max-w-sm w-full rounded-md'
                   />
                 ) : (
                   <div>No Image Available</div>
                 )}
 
-                <CardDescription className="mt-4">
+                <CardDescription className='mt-4'>
                   {post?.post_description}
                 </CardDescription>
               </CardContent>
-              <CardFooter className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-2">
+              <CardFooter className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-2'>
                 {" "}
-                <p className="text-sm sm:text-base wrap-break-word sm:wrap-break-word w-full sm:w-auto">
+                <p className='text-sm sm:text-base wrap-break-word sm:wrap-break-word w-full sm:w-auto'>
                   {" "}
                   {post?.email}{" "}
                 </p>
-                <div className="flex gap-1.5">
+                <div className='flex gap-1.5'>
                   <Button
                     onClick={() => openEditDialog(post)}
-                    className="cursor-pointer h-7 w-7 sm:h-8 sm:w-8 p-0"
+                    className='cursor-pointer h-7 w-7 sm:h-8 sm:w-8 p-0'
                   >
-                    <Edit2 className="h-2 w-2" />
+                    <Edit2 className='h-2 w-2' />
                   </Button>
                   <Button
                     onClick={() => {
                       openDeleteDialogue();
                     }}
-                    className="cursor-pointer h-7 w-7 sm:h-8 sm:w-8 p-0"
+                    className='cursor-pointer h-7 w-7 sm:h-8 sm:w-8 p-0'
                   >
-                    <Trash2 className="h-2 w-2" />
+                    <Trash2 className='h-2 w-2' />
                   </Button>
                 </div>
                 <DeleteDialog
                   open={openConfirmDialog}
                   onOpenChange={setOpenConfirmDialog}
                   onConfirm={() => handleDeletePost(post?._id)}
-                  title="Delete Post"
-                  description="Are you sure you want to delete this post? This action cannot be undone."
-                  confirmText="Delete post"
-                  cancelText="Cancel"
+                  title='Delete Post'
+                  description='Are you sure you want to delete this post? This action cannot be undone.'
+                  confirmText='Delete post'
+                  cancelText='Cancel'
                   isLoading={deleteLoading}
                   isDangerous={true}
                 />
@@ -426,26 +426,25 @@ const PostPage = () => {
       </div>
 
       <Dialog open={addDialogOpen} onOpenChange={setAddDialogOpen}>
-        <DialogContent className="max-h-[80vh] overflow-y-auto">
-          <DialogTitle className="text-2xl">Post Dialog</DialogTitle>
+        <DialogContent className='max-h-[80vh] overflow-y-auto'>
+          <DialogTitle className='text-2xl'>Post Dialog</DialogTitle>
 
           {/* Upload Button */}
-          <div className="h-full flex items-center justify-center rounded-lg">
+          <div className='h-full flex items-center justify-center rounded-lg'>
             <input
-              type="file"
-              accept="image/*"
+              type='file'
+              accept='image/*'
               onChange={handleFileChange}
-              className="hidden"
-              id="file-upload"
-              multiple
+              className='hidden'
+              id='file-upload'
             />
 
             <label
-              htmlFor="file-upload"
-              className="flex items-center gap-2.5 cursor-pointer transition-all text-sm py-2 px-5 border group rounded-[7px] bg-primary text-white"
+              htmlFor='file-upload'
+              className='flex items-center gap-2.5 cursor-pointer transition-all text-sm py-2 px-5 border group rounded-[7px] bg-primary text-white'
             >
-              <Upload className="text-base max-w-4" />
-              Upload Images (Max 5)
+              <Upload className='text-base max-w-4' />
+              Upload Images
             </label>
           </div>
 
@@ -454,24 +453,24 @@ const PostPage = () => {
               {selectedImages.map((file, index) => (
                 <div
                   key={index}
-                  className="relative rounded-lg overflow-hidden border"
+                  className='relative rounded-lg overflow-hidden border'
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={URL.createObjectURL(file)}
-                    alt="preview"
-                    className="h-32 w-full object-cover"
+                    alt='preview'
+                    className='h-32 w-full object-cover'
                   />
 
                   {/* Remove button */}
                   <button
-                    type="button"
+                    type='button'
                     onClick={() =>
                       setSelectedImages((prev) =>
-                        prev.filter((_, i) => i !== index),
+                        prev.filter((_, i) => i !== index)
                       )
                     }
-                    className="absolute top-1 right-1 bg-black/60 text-white text-xs px-2 py-1 rounded"
+                    className='absolute top-1 right-1 bg-black/60 text-white text-xs px-2 py-1 rounded'
                   >
                     ✕
                   </button>
@@ -481,42 +480,42 @@ const PostPage = () => {
           )}
 
           {/* Inputs */}
-          <div className="mt-4">
+          <div className='mt-4'>
             <Label>Post Name</Label>
             <Input
-              name="name"
+              name='name'
               value={formData?.name}
               onChange={handleInputChange}
-              className="mt-2"
-              placeholder="Post Name"
+              className='mt-2'
+              placeholder='Post Name'
             />
           </div>
 
-          <div className="mt-4">
+          <div className='mt-4'>
             <Label>Post Description</Label>
             <Input
-              name="post_description"
+              name='post_description'
               value={formData.post_description}
               onChange={handleInputChange}
-              className="mt-2"
-              placeholder="Post Description"
+              className='mt-2'
+              placeholder='Post Description'
             />
           </div>
 
-          <div className="mt-4">
+          <div className='mt-4'>
             <Label>Email</Label>
             <Input
-              name="email"
+              name='email'
               value={formData?.email}
               onChange={handleInputChange}
-              className="mt-2"
-              type="email"
-              placeholder="Enter your email"
+              className='mt-2'
+              type='email'
+              placeholder='Enter your email'
             />
           </div>
 
           <Button
-            className="mt-6"
+            className='mt-6'
             onClick={() => {
               handleAddEditPost();
             }}
