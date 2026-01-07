@@ -88,15 +88,13 @@ export function createEmailSubscribe(credentials: {
   return api.post<EmailSignupApiResponse>("/email-signup", credentials);
 }
 
-export function getPrivacyText() : Promise<PrivacyResponse[]>{
+export function getPrivacyText(): Promise<PrivacyResponse[]> {
   return api.get<PrivacyResponse[]>("/privacy-policy/getText");
 }
 
-
-export function getTermsText() : Promise<TermsResponse[]>{
+export function getTermsText(): Promise<TermsResponse[]> {
   return api.get<TermsResponse[]>("/terms-conditions/getText");
 }
-
 
 export const authApi = {
   login: (creds: { email: string; password: string }) => login(creds),

@@ -37,8 +37,8 @@ const TermsCondition = () => {
   }
 
   return (
-    <div className='mx-10 my-10'>
-      <h1 className='font-bold text-2xl'>Terms & Conditions</h1>
+    <div className="mx-10 my-10">
+      <h1 className="font-bold text-2xl">Terms & Conditions</h1>
       <p className="mt-4 font-medium text-xl text-gray-500">{termsData}</p>
     </div>
   );

@@ -37,10 +37,8 @@ const PrivacyPolicy = () => {
 
   return (
     <div className="mx-10 my-10">
-      <h1 className='font-bold text-2xl'>Privacy Policy</h1>
-      <p className="font-medium mt-4 text-xl text-gray-500">
-        {privacyData}
-      </p>
+      <h1 className="font-bold text-2xl">Privacy Policy</h1>
+      <p className="font-medium mt-4 text-xl text-gray-500">{privacyData}</p>
     </div>
   );
 };

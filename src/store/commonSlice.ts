@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { createEmailSubscribe, EmailSignupApiResponse, getPrivacyText, getTermsText } from "../api/authApi";
+import {
+  createEmailSubscribe,
+  EmailSignupApiResponse,
+  getPrivacyText,
+  getTermsText,
+} from "../api/authApi";
 
 export interface EmailSubscribeResponse {
   _id: string;
