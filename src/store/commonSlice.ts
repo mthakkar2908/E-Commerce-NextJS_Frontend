@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { createEmailSubscribe, EmailSignupApiResponse } from "../api/authApi";
+import { createEmailSubscribe, EmailSignupApiResponse, getPrivacyText, getTermsText } from "../api/authApi";
 
 export interface EmailSubscribeResponse {
   _id: string;
@@ -35,6 +35,34 @@ export const CreateEmailSubScription = createAsyncThunk<
     } catch (error: any) {
       return rejectWithValue(
         error?.response?.data?.message || "Email already subscribed",
+      );
+    }
+  },
+);
+
+export const GetPrivacyText = createAsyncThunk(
+  "common/GetPrivacyText",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await getPrivacyText();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return rejectWithValue(
+        error?.response?.data?.message || "failed to fetch the privacy data",
+      );
+    }
+  },
+);
+
+export const GetTermsText = createAsyncThunk(
+  "common/GetTermsText",
+  async (_, { rejectWithValue }) => {
+    try {
+      return await getTermsText();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return rejectWithValue(
+        error?.response?.data?.message || "Failed to Fetch Terms Data.",
       );
     }
   },

@@ -48,7 +48,7 @@ const Footer = () => {
   };
 
   return (
-    <div className="bottom-0 z-50 bg-gray-300 shadow-md text-primary px-10 pt-10 pb-3">
+    <div className="absolute bottom-0 z-50 bg-gray-300 shadow-md text-primary px-10 pt-10 pb-3">
       <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4 max-w-7xl mx-auto">
         <div className="flex flex-col gap-3">
           <h1 className="text-indigo-600 font-bold text-lg">Next js APP</h1>

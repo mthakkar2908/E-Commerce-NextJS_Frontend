@@ -1,7 +1,8 @@
+import TermsCondition from "@/src/modules/Terms/TermsCondition";
 import React from "react";
 
 const page = () => {
-  return <div>Hello Terms Page.</div>;
+  return <TermsCondition />;
 };
 
 export default page;

@@ -1,3 +1,5 @@
+import { PrivacyResponse } from "../modules/Privacy/PrivacyPolicy";
+import { TermsResponse } from "../modules/Terms/TermsCondition";
 import api from "./client";
 
 export interface EmailSignupApiResponse {
@@ -85,6 +87,16 @@ export function createEmailSubscribe(credentials: {
 }): Promise<EmailSignupApiResponse> {
   return api.post<EmailSignupApiResponse>("/email-signup", credentials);
 }
+
+export function getPrivacyText() : Promise<PrivacyResponse[]>{
+  return api.get<PrivacyResponse[]>("/privacy-policy/getText");
+}
+
+
+export function getTermsText() : Promise<TermsResponse[]>{
+  return api.get<TermsResponse[]>("/terms-conditions/getText");
+}
+
 
 export const authApi = {
   login: (creds: { email: string; password: string }) => login(creds),
