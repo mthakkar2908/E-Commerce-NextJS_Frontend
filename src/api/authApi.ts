@@ -68,6 +68,10 @@ export function deleteOrderById(orderId: string) {
   return api.delete(`/orders/deleteOrder/${orderId}`);
 }
 
+export function searchOrdersByString(orderSearchString : string){
+  return api.get(`/orders/searchOrders?o=${orderSearchString}`)
+}
+
 export const authApi = {
   login: (creds: { email: string; password: string }) => login(creds),
   me: () => api.get("/auth/me"),

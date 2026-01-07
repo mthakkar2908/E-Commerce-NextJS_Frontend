@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { deleteOrderById, getOrders, getOrdersById } from "../api/authApi";
+import { deleteOrderById, getOrders, getOrdersById, searchOrdersByString } from "../api/authApi";
 
 export interface OrderResponse {
   _id: string;
@@ -70,6 +70,18 @@ export const DeleteOrderById = createAsyncThunk(
       return resp;
     } catch {
       return rejectWithValue("failed to remove the order");
+    }
+  },
+);
+
+export const searchOrders = createAsyncThunk(
+  "order/searchOrders",
+  async (orderSearchString: string, { rejectWithValue }) => {
+    try {
+      const resp = await searchOrdersByString(orderSearchString);
+      return resp;
+    } catch {
+      return rejectWithValue("failed to filter the order data.");
     }
   },
 );
