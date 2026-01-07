@@ -1,5 +1,13 @@
 import api from "./client";
 
+export interface EmailSignupApiResponse {
+  message: string;
+  data: {
+    _id: string;
+    email: string;
+  };
+}
+
 export function login(credentials: { email: string; password: string }) {
   return api.post("/users/signIn", credentials);
 }
@@ -71,6 +79,13 @@ export function deleteOrderById(orderId: string) {
 export function searchOrdersByString(orderSearchString: string) {
   return api.get(`/orders/searchOrders?o=${orderSearchString}`);
 }
+
+export function createEmailSubscribe(
+  credentials: { email: string }
+): Promise<EmailSignupApiResponse> {
+  return api.post<EmailSignupApiResponse>('/email-signup', credentials);
+}
+
 
 export const authApi = {
   login: (creds: { email: string; password: string }) => login(creds),

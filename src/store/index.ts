@@ -3,6 +3,8 @@ import authReducer from "./authSlice";
 import productReducer from "./productSlice";
 import postReducer from "./postSlice";
 import orderReducer from "./orderSlice";
+import commonReducer from "./commonSlice";
+
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 
 export const store = configureStore({
@@ -11,6 +13,7 @@ export const store = configureStore({
     product: productReducer,
     post: postReducer,
     order: orderReducer,
+    common: commonReducer,
   },
 });
 
