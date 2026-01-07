@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { deleteOrderById, getOrders, getOrdersById, searchOrdersByString } from "../api/authApi";
+import {
+  deleteOrderById,
+  getOrders,
+  getOrdersById,
+  searchOrdersByString,
+} from "../api/authApi";
 
 export interface OrderResponse {
   _id: string;
