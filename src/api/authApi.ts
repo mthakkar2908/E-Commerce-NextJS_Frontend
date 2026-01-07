@@ -80,12 +80,11 @@ export function searchOrdersByString(orderSearchString: string) {
   return api.get(`/orders/searchOrders?o=${orderSearchString}`);
 }
 
-export function createEmailSubscribe(
-  credentials: { email: string }
-): Promise<EmailSignupApiResponse> {
-  return api.post<EmailSignupApiResponse>('/email-signup', credentials);
+export function createEmailSubscribe(credentials: {
+  email: string;
+}): Promise<EmailSignupApiResponse> {
+  return api.post<EmailSignupApiResponse>("/email-signup", credentials);
 }
-
 
 export const authApi = {
   login: (creds: { email: string; password: string }) => login(creds),

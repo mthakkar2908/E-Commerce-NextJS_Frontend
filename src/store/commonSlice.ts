@@ -19,7 +19,7 @@ const initialState: commonState = {
   message: "",
   token: null,
   status: "idle",
-  error: null
+  error: null,
 };
 
 export const CreateEmailSubScription = createAsyncThunk<
@@ -31,15 +31,14 @@ export const CreateEmailSubScription = createAsyncThunk<
   async (credentials, { rejectWithValue }) => {
     try {
       return await createEmailSubscribe(credentials);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(
-        error?.response?.data?.message || "Email already subscribed"
+        error?.response?.data?.message || "Email already subscribed",
       );
     }
-  }
+  },
 );
-
 
 const commonSlice = createSlice({
   name: "common",
@@ -61,7 +60,7 @@ const commonSlice = createSlice({
           console.log("Message is :", action?.payload?.message);
           state.email = payload?.email ?? null;
           state.message = action?.payload?.message;
-        }
+        },
       )
       .addCase(
         CreateEmailSubScription.rejected,
@@ -70,9 +69,9 @@ const commonSlice = createSlice({
           console.log("Message is in error :", action?.payload?.message);
           state.status = "failed";
           state.error = action.payload as string;
-        }
+        },
       );
-  }
+  },
 });
 
 export default commonSlice.reducer;
