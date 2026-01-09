@@ -10,6 +10,38 @@ export interface EmailSignupApiResponse {
   };
 }
 
+export interface ContactResponse {
+  message: string;
+  data: {
+    name: string;
+    email: string;
+    title: string;
+    mobile_no: string;
+    description: string;
+    _id: string;
+  };
+  error: string;
+  statusCode: number;
+}
+
+export interface cartResponse {
+  statusCode: number;
+  message: string;
+  data: {
+    userId: string;
+    items: [
+      {
+        productId: string;
+        quantity: string;
+        _id: string;
+      },
+    ];
+    _id: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
+
 export function login(credentials: { email: string; password: string }) {
   return api.post("/users/signIn", credentials);
 }
@@ -96,6 +128,27 @@ export function getTermsText(): Promise<TermsResponse[]> {
   return api.get<TermsResponse[]>("/terms-conditions/getText");
 }
 
+export function submitContactform(credentials: {
+  name: string;
+  email: string;
+  mobile_no: string;
+  title: string;
+  description: string;
+}) {
+  return api.post<ContactResponse>("/contact/form", credentials);
+}
+
+export function addToCart(
+  credentials: {
+    items: {
+      productId: string;
+      quantity: number;
+    }[];
+  },
+  userId: string,
+): Promise<cartResponse> {
+  return api.post<cartResponse>(`/cart/${userId}/add`, credentials);
+}
 export const authApi = {
   login: (creds: { email: string; password: string }) => login(creds),
   me: () => api.get("/auth/me"),

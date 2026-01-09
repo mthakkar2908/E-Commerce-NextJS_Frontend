@@ -1,9 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import {
+  addToCart,
   createEmailSubscribe,
   EmailSignupApiResponse,
   getPrivacyText,
   getTermsText,
+  submitContactform,
 } from "../api/authApi";
 
 export interface EmailSubscribeResponse {
@@ -27,6 +31,16 @@ const initialState: commonState = {
   error: null,
 };
 
+type AddToCartPayload = {
+  userId: string;
+  credentials: {
+    items: {
+      productId: string;
+      quantity: number; // 👈 IMPORTANT
+    }[];
+  };
+};
+
 export const CreateEmailSubScription = createAsyncThunk<
   EmailSignupApiResponse,
   { email: string },
@@ -36,7 +50,6 @@ export const CreateEmailSubScription = createAsyncThunk<
   async (credentials, { rejectWithValue }) => {
     try {
       return await createEmailSubscribe(credentials);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(
         error?.response?.data?.message || "Email already subscribed",
@@ -50,7 +63,6 @@ export const GetPrivacyText = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       return await getPrivacyText();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(
         error?.response?.data?.message || "failed to fetch the privacy data",
@@ -64,10 +76,46 @@ export const GetTermsText = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       return await getTermsText();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(
         error?.response?.data?.message || "Failed to Fetch Terms Data.",
+      );
+    }
+  },
+);
+
+export const ContactFormSubmit = createAsyncThunk(
+  "common/ContactFormSubmit",
+  async (
+    credentials: {
+      name: string;
+      email: string;
+      mobile_no: string;
+      title: string;
+      description: string;
+    },
+    { rejectWithValue },
+  ) => {
+    try {
+      const resp = await submitContactform(credentials);
+      return resp;
+    } catch (error: any) {
+      return rejectWithValue(
+        error?.response?.data?.message || "Error to submit contact form",
+      );
+    }
+  },
+);
+
+export const AddToCart = createAsyncThunk(
+  "common/AddToCart",
+  async ({ userId, credentials }: AddToCartPayload, { rejectWithValue }) => {
+    try {
+      const resp = await addToCart(credentials, userId);
+      return resp;
+    } catch (error: any) {
+      return rejectWithValue(
+        error?.response?.data?.message || "Error adding to cart",
       );
     }
   },
@@ -85,19 +133,15 @@ const commonSlice = createSlice({
       })
       .addCase(
         CreateEmailSubScription.fulfilled,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (state, action: PayloadAction<any>) => {
           state.status = "succeeded";
           const payload = action.payload?.data ?? action.payload;
-          console.log("Payload is : ", payload);
-          console.log("Message is :", action?.payload?.message);
           state.email = payload?.email ?? null;
           state.message = action?.payload?.message;
         },
       )
       .addCase(
         CreateEmailSubScription.rejected,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (state, action: PayloadAction<any>) => {
           console.log("Message is in error :", action?.payload?.message);
           state.status = "failed";

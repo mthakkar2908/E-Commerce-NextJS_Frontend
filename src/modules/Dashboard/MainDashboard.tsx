@@ -10,9 +10,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import LoadingWrapper from "@/src/common/LoadingWrapper";
+import QuantityCounter from "@/src/common/QuantityCounter";
 import useDebounce from "@/src/common/useDebounce";
 
 import { useAppDispatch, useAppSelector } from "@/src/store";
+import { AddToCart } from "@/src/store/commonSlice";
 import {
   GetFavourite,
   getProduct,
@@ -47,12 +49,20 @@ const MainDashboard = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const auth = useAppSelector((s: any) => s.auth) as AuthState;
   const [productData, setProductData] = useState<ProductItem[] | null>(null);
+  const [quantities, setQuantities] = useState<Record<string, number>>({});
 
   const [searchValue, setSearchValue] = useState<string>("");
 
   const hasRefCurrent = useRef<boolean>(false);
 
   const debounce = useDebounce(searchValue, 500);
+
+  const handleQuantityChange = (productId: string, value: number) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [productId]: value,
+    }));
+  };
 
   useEffect(() => {
     if (auth.status === "idle" && auth.user === null) {
@@ -119,6 +129,30 @@ const MainDashboard = () => {
     }
   };
 
+  const handleAddToCart = async (productId: string, quantity: number) => {
+    try {
+      const cartData = await dispatch(
+        AddToCart({
+          credentials: {
+            items: [
+              {
+                productId: productId,
+                quantity: Number(quantity),
+              },
+            ],
+          },
+          userId: auth?.user?.userId,
+        }),
+      ).unwrap();
+
+      if (cartData.statusCode == 201) {
+        toast.success(cartData.message ?? "Cart Added Successfully.");
+      }
+    } catch (error) {
+      console.error(error ?? "Faild to add the data in cart");
+    }
+  };
+
   return (
     <div className="w-full mx-10 my-10">
       <Toaster />
@@ -171,9 +205,31 @@ const MainDashboard = () => {
                     </div>
                   </CardContent>
                   <CardFooter className="flex-col gap-2">
-                    <Button type="submit" className="w-full">
-                      Add to cart
-                    </Button>
+                    <div className="flex justify-between gap-12">
+                      {product._id && (
+                        <QuantityCounter
+                          value={quantities[product._id] ?? 1}
+                          max={Number(product.quan)}
+                          onChange={(value) =>
+                            handleQuantityChange(String(product._id), value)
+                          }
+                        />
+                      )}
+
+                      <Button
+                        disabled={!product._id}
+                        onClick={() => {
+                          if (!product._id) return;
+
+                          handleAddToCart(
+                            product._id,
+                            quantities[product._id] ?? 1,
+                          );
+                        }}
+                      >
+                        Add to cart
+                      </Button>
+                    </div>
                     <Button
                       onClick={() => {
                         router.push("products/" + product?._id);

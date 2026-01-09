@@ -7,13 +7,19 @@ import { useState } from "react";
 import { useAppDispatch } from "../store";
 import { CreateEmailSubScription } from "../store/commonSlice";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
 
 const Footer = () => {
   const [valueEmail, setValueEmail] = useState("");
   const router = useRouter();
   const [sendEmailLoading, setSendEmailLoading] = useState(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { user } = useSelector((state: any) => state.auth);
+
   const dispatch = useAppDispatch();
+
+  if (!user?.token) return null;
 
   const handleEmailSignup = async () => {
     setSendEmailLoading(true);
@@ -48,7 +54,7 @@ const Footer = () => {
   };
 
   return (
-    <div className="absolute bottom-0 z-50 bg-gray-300 shadow-md text-primary px-10 pt-10 pb-3">
+    <div className="bottom-0 z-50 bg-gray-300 shadow-md text-primary px-10 pt-10 pb-3">
       <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4 max-w-7xl mx-auto">
         <div className="flex flex-col gap-3">
           <h1 className="text-indigo-600 font-bold text-lg">Next js APP</h1>
@@ -88,7 +94,7 @@ const Footer = () => {
             <li className="font-semibold">Company</li>
             <li className="hover:text-red-600 cursor-pointer">Blogs</li>
             <li
-              onClick={() => router.push("/contact-us")}
+              onClick={() => router.push("/contact-us?section=faq")}
               className="hover:text-red-600 cursor-pointer"
             >
               FAQ

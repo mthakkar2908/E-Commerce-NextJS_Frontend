@@ -1,7 +1,17 @@
-import React from "react";
+"use client";
 
-const page = () => {
-  return <div>This is Contact page.</div>;
+import ContactPage from "@/src/modules/Contacts/ContactPage";
+import FAQs from "@/src/modules/Contacts/FAQs";
+
+const Page = () => {
+
+
+  return (
+    <div>
+      <ContactPage />
+      <FAQs />
+    </div>
+  );
 };
 
-export default page;
+export default Page;
