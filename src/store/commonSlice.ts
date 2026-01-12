@@ -5,6 +5,7 @@ import {
   addToCart,
   createEmailSubscribe,
   EmailSignupApiResponse,
+  getCartData,
   getPrivacyText,
   getTermsText,
   submitContactform,
@@ -121,6 +122,19 @@ export const AddToCart = createAsyncThunk(
   },
 );
 
+export const GetCartData = createAsyncThunk(
+  "common/GetCartData",
+  async (_, { rejectWithValue }) => {
+    try {
+      const resp = await getCartData();
+      return resp;
+    } catch (error: any) {
+      return rejectWithValue(
+        error?.response?.data?.message || "Error fetching cart data",
+      );
+    }
+  },
+);
 const commonSlice = createSlice({
   name: "common",
   initialState,

@@ -34,12 +34,26 @@ export interface cartResponse {
         productId: string;
         quantity: string;
         _id: string;
-      },
+      }
     ];
     _id: string;
     createdAt: string;
     updatedAt: string;
   };
+}
+
+export interface getCartResponse {
+  _id: string;
+  userId: string;
+  items: [
+    {
+      productId: string;
+      quantity: number;
+      _id: string;
+    }
+  ];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export function login(credentials: { email: string; password: string }) {
@@ -69,16 +83,16 @@ export function getPosts() {
 export function createPost(formData: FormData) {
   return api.post("/posts", formData, {
     headers: {
-      "Content-Type": "multipart/form-data",
-    },
+      "Content-Type": "multipart/form-data"
+    }
   });
 }
 
 export function updateUser(formData: FormData, userId: string) {
   return api.post(`/users/updateProdile/${userId}`, formData, {
     headers: {
-      "Content-Type": "multipart/form-data",
-    },
+      "Content-Type": "multipart/form-data"
+    }
   });
 }
 
@@ -89,8 +103,8 @@ export function getUserById(userId: string) {
 export function UpdatePostForId(formData: FormData, postId: string) {
   return api.post(`/posts/update/${postId}`, formData, {
     headers: {
-      "Content-Type": "multipart/form-data",
-    },
+      "Content-Type": "multipart/form-data"
+    }
   });
 }
 
@@ -145,13 +159,18 @@ export function addToCart(
       quantity: number;
     }[];
   },
-  userId: string,
+  userId: string
 ): Promise<cartResponse> {
   return api.post<cartResponse>(`/cart/${userId}/add`, credentials);
 }
+
+export function getCartData():Promise<getCartResponse>{
+  return api.get<getCartResponse>("/cart");
+
+}
 export const authApi = {
   login: (creds: { email: string; password: string }) => login(creds),
-  me: () => api.get("/auth/me"),
+  me: () => api.get("/auth/me")
 };
 
 export default authApi;
