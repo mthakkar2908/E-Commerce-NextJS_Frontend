@@ -1,3 +1,4 @@
+import { ResponseProduct } from "../modules/Dashboard/MainDashboard";
 import { PrivacyResponse } from "../modules/Privacy/PrivacyPolicy";
 import { TermsResponse } from "../modules/Terms/TermsCondition";
 import api from "./client";
@@ -8,6 +9,18 @@ export interface EmailSignupApiResponse {
     _id: string;
     email: string;
   };
+}
+
+
+export interface Users { 
+  _id : string;
+  name : string;
+  email : string;
+  password : string;
+  token : string;
+  profile_image : string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ContactResponse {
@@ -60,8 +73,8 @@ export function login(credentials: { email: string; password: string }) {
   return api.post("/users/signIn", credentials);
 }
 
-export function getProducts() {
-  return api.get("/products");
+export function getProducts(page : number , pageSize: number): Promise<ResponseProduct> {
+  return api.get<ResponseProduct>(`/products?page=${page}&pageSize=${pageSize}`);
 }
 
 export function updateFav(id: string | undefined) {
@@ -137,6 +150,12 @@ export function createEmailSubscribe(credentials: {
 export function getPrivacyText(): Promise<PrivacyResponse[]> {
   return api.get<PrivacyResponse[]>("/privacy-policy/getText");
 }
+
+
+export function getUsers(): Promise<Users[]> {
+  return api.get<Users[]>("/users");
+}
+
 
 export function getTermsText(): Promise<TermsResponse[]> {
   return api.get<TermsResponse[]>("/terms-conditions/getText");

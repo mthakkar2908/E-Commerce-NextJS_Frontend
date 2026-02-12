@@ -5,6 +5,8 @@ import {
   searchProducts,
   updateFav,
 } from "../api/authApi";
+import { ParamasProducts } from "./authSlice";
+import { ResponseProduct } from "../modules/Dashboard/MainDashboard";
 
 export interface Product {
   _id: number;
@@ -30,17 +32,22 @@ const initialState: ProductState = {
   error: null,
 };
 
-export const getProduct = createAsyncThunk(
+export const getProduct = createAsyncThunk<
+  ResponseProduct,
+  { page: number; pageSize: number }, 
+  { rejectValue: string } 
+>(
   "product/getProducts",
-  async (_, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const resp = await getProducts();
+      const resp = await getProducts(payload.page, payload.pageSize);
       return resp;
     } catch {
       return rejectWithValue("Products not fetched.");
     }
-  },
+  }
 );
+
 
 export const GetFavourite = createAsyncThunk(
   "product/GetFavourite",

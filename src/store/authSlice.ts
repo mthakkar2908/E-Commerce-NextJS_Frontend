@@ -1,11 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import {
   getProducts,
   getUserById,
+  getUsers,
   login as loginApi,
   updateUser,
 } from "../api/authApi";
 import { saveSession, clearSession } from "../utils/session";
+
+
+export interface ParamasProducts{
+  page : number;
+  pageSize : number;
+}
 
 export interface AuthState {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,12 +47,24 @@ export const login = createAsyncThunk(
 
 export const getProduct = createAsyncThunk(
   "product/getProducts",
-  async (_, { rejectWithValue }) => {
+  async (payload : {page : number , pageSize : number}, { rejectWithValue }) => {
     try {
-      const resp = await getProducts();
+      const resp = await getProducts(payload.page , payload.pageSize);
       return resp;
     } catch {
       return rejectWithValue("Products not fetched.");
+    }
+  },
+);
+
+export const getUsersForChat = createAsyncThunk(
+  "Auth/getUsersForChat",
+  async (_, { rejectWithValue }) => {
+    try {
+      const resp = await getUsers();
+      return resp;
+    } catch (error: any) {
+      return rejectWithValue(error.message || "Users not fetched.");
     }
   },
 );
