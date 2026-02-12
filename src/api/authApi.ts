@@ -11,14 +11,13 @@ export interface EmailSignupApiResponse {
   };
 }
 
-
-export interface Users { 
-  _id : string;
-  name : string;
-  email : string;
-  password : string;
-  token : string;
-  profile_image : string;
+export interface Users {
+  _id: string;
+  name: string;
+  email: string;
+  password: string;
+  token: string;
+  profile_image: string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -73,8 +72,13 @@ export function login(credentials: { email: string; password: string }) {
   return api.post("/users/signIn", credentials);
 }
 
-export function getProducts(page : number , pageSize: number): Promise<ResponseProduct> {
-  return api.get<ResponseProduct>(`/products?page=${page}&pageSize=${pageSize}`);
+export function getProducts(
+  page: number,
+  pageSize: number,
+): Promise<ResponseProduct> {
+  return api.get<ResponseProduct>(
+    `/products?page=${page}&pageSize=${pageSize}`,
+  );
 }
 
 export function updateFav(id: string | undefined) {
@@ -151,11 +155,9 @@ export function getPrivacyText(): Promise<PrivacyResponse[]> {
   return api.get<PrivacyResponse[]>("/privacy-policy/getText");
 }
 
-
 export function getUsers(): Promise<Users[]> {
   return api.get<Users[]>("/users");
 }
-
 
 export function getTermsText(): Promise<TermsResponse[]> {
   return api.get<TermsResponse[]>("/terms-conditions/getText");

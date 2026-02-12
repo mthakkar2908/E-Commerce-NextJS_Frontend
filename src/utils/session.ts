@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const KEY = "app_session_v1";
 
-
 export function saveSession(data: any) {
   if (typeof window === "undefined") return;
   try {

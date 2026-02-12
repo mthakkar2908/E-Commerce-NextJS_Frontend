@@ -34,20 +34,16 @@ const initialState: ProductState = {
 
 export const getProduct = createAsyncThunk<
   ResponseProduct,
-  { page: number; pageSize: number }, 
-  { rejectValue: string } 
->(
-  "product/getProducts",
-  async (payload, { rejectWithValue }) => {
-    try {
-      const resp = await getProducts(payload.page, payload.pageSize);
-      return resp;
-    } catch {
-      return rejectWithValue("Products not fetched.");
-    }
+  { page: number; pageSize: number },
+  { rejectValue: string }
+>("product/getProducts", async (payload, { rejectWithValue }) => {
+  try {
+    const resp = await getProducts(payload.page, payload.pageSize);
+    return resp;
+  } catch {
+    return rejectWithValue("Products not fetched.");
   }
-);
-
+});
 
 export const GetFavourite = createAsyncThunk(
   "product/GetFavourite",

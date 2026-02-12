@@ -9,10 +9,9 @@ import {
 } from "../api/authApi";
 import { saveSession, clearSession } from "../utils/session";
 
-
-export interface ParamasProducts{
-  page : number;
-  pageSize : number;
+export interface ParamasProducts {
+  page: number;
+  pageSize: number;
 }
 
 export interface AuthState {
@@ -47,9 +46,9 @@ export const login = createAsyncThunk(
 
 export const getProduct = createAsyncThunk(
   "product/getProducts",
-  async (payload : {page : number , pageSize : number}, { rejectWithValue }) => {
+  async (payload: { page: number; pageSize: number }, { rejectWithValue }) => {
     try {
-      const resp = await getProducts(payload.page , payload.pageSize);
+      const resp = await getProducts(payload.page, payload.pageSize);
       return resp;
     } catch {
       return rejectWithValue("Products not fetched.");
