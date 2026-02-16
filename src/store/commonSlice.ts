@@ -4,9 +4,11 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import {
   addToCart,
   createEmailSubscribe,
+  deleteList,
   EmailSignupApiResponse,
   getCartData,
   getPrivacyText,
+  getSubScribeList,
   getTermsText,
   submitContactform,
 } from "../api/authApi";
@@ -44,7 +46,7 @@ type AddToCartPayload = {
 
 export const CreateEmailSubScription = createAsyncThunk<
   EmailSignupApiResponse,
-  { email: string },
+  { email: string , userId: string },
   { rejectValue: string }
 >(
   "common/CreateEmailSubScription",
@@ -135,6 +137,37 @@ export const GetCartData = createAsyncThunk(
     }
   },
 );
+
+export const getSubscribeList = createAsyncThunk(
+  "common/getSubscribeList",
+  async(userId : string,  {rejectWithValue}) => {
+    try {
+      const response = await getSubScribeList(userId);
+      return response;
+    } catch (error : any) {
+      return rejectWithValue(error.response?.data?.message ?? "No data availabel");
+    }
+  }
+)
+
+export const deleteSubscribeChannel = createAsyncThunk(
+  "common/deleteSubscribeChannel",
+  async (
+    payload: { userId: string; email: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await deleteList(payload);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.message ?? "No data available"
+      );
+    }
+  }
+);
+
+
 const commonSlice = createSlice({
   name: "common",
   initialState,

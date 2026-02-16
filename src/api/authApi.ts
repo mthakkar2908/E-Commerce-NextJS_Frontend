@@ -68,6 +68,22 @@ export interface getCartResponse {
   updatedAt: string;
 }
 
+
+export interface SubscribeItem {
+  _id: string;
+  userId: string;
+  email: string;
+}
+export interface SubscribeResponse {
+  message: string;
+  data: SubscribeItem[];
+}
+
+export interface UnsubscribeResponse {
+   message : string;
+}
+
+
 export function login(credentials: { email: string; password: string }) {
   return api.post("/users/signIn", credentials);
 }
@@ -147,6 +163,7 @@ export function searchOrdersByString(orderSearchString: string) {
 
 export function createEmailSubscribe(credentials: {
   email: string;
+  userId: string;
 }): Promise<EmailSignupApiResponse> {
   return api.post<EmailSignupApiResponse>("/email-signup", credentials);
 }
@@ -162,6 +179,26 @@ export function getUsers(): Promise<Users[]> {
 export function getTermsText(): Promise<TermsResponse[]> {
   return api.get<TermsResponse[]>("/terms-conditions/getText");
 }
+export function getSubScribeList(userId: string): Promise<SubscribeResponse> {
+  return api.get<SubscribeResponse>(
+    `/email-signup/get-emails?userId=${userId}`
+  );
+}
+
+export function deleteList(payload: {
+  userId: string;
+  email: string;
+}): Promise<UnsubscribeResponse> {
+  return api.delete<UnsubscribeResponse>(
+    `email-signup/unSubscribe`,
+    {
+      data: payload, 
+    }
+  );
+}
+
+
+
 
 export function submitContactform(credentials: {
   name: string;
