@@ -46,7 +46,7 @@ type AddToCartPayload = {
 
 export const CreateEmailSubScription = createAsyncThunk<
   EmailSignupApiResponse,
-  { email: string , userId: string },
+  { email: string; userId: string },
   { rejectValue: string }
 >(
   "common/CreateEmailSubScription",
@@ -140,33 +140,31 @@ export const GetCartData = createAsyncThunk(
 
 export const getSubscribeList = createAsyncThunk(
   "common/getSubscribeList",
-  async(userId : string,  {rejectWithValue}) => {
+  async (userId: string, { rejectWithValue }) => {
     try {
       const response = await getSubScribeList(userId);
       return response;
-    } catch (error : any) {
-      return rejectWithValue(error.response?.data?.message ?? "No data availabel");
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.message ?? "No data availabel",
+      );
     }
-  }
-)
+  },
+);
 
 export const deleteSubscribeChannel = createAsyncThunk(
   "common/deleteSubscribeChannel",
-  async (
-    payload: { userId: string; email: string },
-    { rejectWithValue }
-  ) => {
+  async (payload: { userId: string; email: string }, { rejectWithValue }) => {
     try {
       const response = await deleteList(payload);
       return response;
     } catch (error: any) {
       return rejectWithValue(
-        error.response?.data?.message ?? "No data available"
+        error.response?.data?.message ?? "No data available",
       );
     }
-  }
+  },
 );
-
 
 const commonSlice = createSlice({
   name: "common",
