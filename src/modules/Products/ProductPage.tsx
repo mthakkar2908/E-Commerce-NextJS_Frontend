@@ -18,6 +18,7 @@ import { useAppDispatch } from "@/src/store";
 import LoadingWrapper from "@/src/common/LoadingWrapper";
 import toast from "react-hot-toast";
 
+
 const ProductPage = () => {
   const { productId } = useParams<{ productId: string }>();
 
