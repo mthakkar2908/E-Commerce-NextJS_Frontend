@@ -7,7 +7,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card";
 import LoadingWrapper from "@/src/common/LoadingWrapper";
 import QuantityCounter from "@/src/common/QuantityCounter";
@@ -18,7 +18,7 @@ import { AddToCart } from "@/src/store/commonSlice";
 import {
   GetFavourite,
   getProduct,
-  searchProductsByQuery
+  searchProductsByQuery,
 } from "@/src/store/productSlice";
 import { ChevronsLeft, ChevronsRight, Heart } from "lucide-react";
 
@@ -68,7 +68,7 @@ const MainDashboard = () => {
   const handleQuantityChange = (productId: string, value: number) => {
     setQuantities((prev) => ({
       ...prev,
-      [productId]: value
+      [productId]: value,
     }));
   };
 
@@ -82,7 +82,7 @@ const MainDashboard = () => {
     async function fetchFiltredData() {
       try {
         const response = await dispatch(
-          searchProductsByQuery(debounce)
+          searchProductsByQuery(debounce),
         ).unwrap();
         setProductData(response as ProductItem[]);
       } catch (error) {
@@ -97,7 +97,7 @@ const MainDashboard = () => {
     const fetchProduct = async (): Promise<void> => {
       try {
         const response: ResponseProduct = await dispatch(
-          getProduct({ page, pageSize })
+          getProduct({ page, pageSize }),
         ).unwrap();
 
         setProductData(response.data);
@@ -124,9 +124,9 @@ const MainDashboard = () => {
           ? prev.map((product) =>
               product._id === id
                 ? { ...product, is_fav: !product.is_fav }
-                : product
+                : product,
             )
-          : prev
+          : prev,
       );
     } catch (error) {
       console.error("Failed to update favourite:", error);
@@ -141,12 +141,12 @@ const MainDashboard = () => {
             items: [
               {
                 productId: productId,
-                quantity: Number(quantity)
-              }
-            ]
+                quantity: Number(quantity),
+              },
+            ],
           },
-          userId: auth?.user?.userId
-        })
+          userId: auth?.user?.userId,
+        }),
       ).unwrap();
 
       if (cartData.statusCode == 201) {
@@ -155,8 +155,8 @@ const MainDashboard = () => {
           duration: 3000,
           style: {
             background: "#101010",
-            color: "#fff"
-          }
+            color: "#fff",
+          },
         });
       }
     } catch (error) {
@@ -165,25 +165,25 @@ const MainDashboard = () => {
   };
 
   return (
-    <div className='w-full mx-10 my-10'>
+    <div className="w-full mx-10 my-10">
       <Toaster />
       {auth?.user ? (
         <div>
-          <h1 className='text-black text-2xl font-bold flex items-center justify-center my-5'>
+          <h1 className="text-black text-2xl font-bold flex items-center justify-center my-5">
             Your Products
           </h1>
-          <div className='flex justify-between gap-5'>
+          <div className="flex justify-between gap-5">
             <input
-              type='text'
+              type="text"
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              placeholder='Search Product here..'
-              className='h-6 text-[#212121] px-2 py-6 w-full mb-4 flex justify-center items-center border border-black rounded-xl'
+              placeholder="Search Product here.."
+              className="h-6 text-[#212121] px-2 py-6 w-full mb-4 flex justify-center items-center border border-black rounded-xl"
             />
 
-            <div className='relative w-20'>
+            <div className="relative w-20">
               <select
-                className='
+                className="
       appearance-none
       w-full
       h-12
@@ -198,7 +198,7 @@ const MainDashboard = () => {
       focus:ring-2
       focus:ring-blue-500
       cursor-pointer
-    '
+    "
                 value={pageSize}
                 onChange={(e) => {
                   setPageSize(Number(e.target.value));
@@ -212,24 +212,24 @@ const MainDashboard = () => {
               </select>
             </div>
           </div>
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3'>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
             {productData ? (
               productData.map((product) => (
                 <Card
                   key={product?._id}
-                  className='w-full max-w-sm shadow-[0_-4px_10px_-2px_gray,0_4px_10px_-2px_orange]'
+                  className="w-full max-w-sm shadow-[0_-4px_10px_-2px_gray,0_4px_10px_-2px_orange]"
                 >
                   <CardHeader>
                     <CardTitle>{product.name}</CardTitle>
                     <CardDescription>{product.about_product}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className='flex justify-between'>
+                    <div className="flex justify-between">
                       <div>
-                        <p className='mb-4 text-sm text-gray-600'>
+                        <p className="mb-4 text-sm text-gray-600">
                           Price : ${product.price}
                         </p>
-                        <p className='text-sm text-gray-600'>
+                        <p className="text-sm text-gray-600">
                           In Stock: {product.quan}
                         </p>
                       </div>
@@ -237,19 +237,19 @@ const MainDashboard = () => {
                         {product.is_fav === false || !product.is_fav ? (
                           <Heart
                             onClick={() => updateFavourite(product?._id)}
-                            className='text-red-500'
+                            className="text-red-500"
                           />
                         ) : (
                           <Heart
                             onClick={() => updateFavourite(product?._id)}
-                            className='text-red-500 fill-red-500'
+                            className="text-red-500 fill-red-500"
                           />
                         )}
                       </div>
                     </div>
                   </CardContent>
-                  <CardFooter className='flex-col gap-2'>
-                    <div className='flex justify-between gap-12'>
+                  <CardFooter className="flex-col gap-2">
+                    <div className="flex justify-between gap-12">
                       {product._id && (
                         <QuantityCounter
                           value={quantities[product._id] ?? 1}
@@ -267,7 +267,7 @@ const MainDashboard = () => {
 
                           handleAddToCart(
                             product._id,
-                            quantities[product._id] ?? 1
+                            quantities[product._id] ?? 1,
                           );
                         }}
                       >
@@ -278,8 +278,8 @@ const MainDashboard = () => {
                       onClick={() => {
                         router.push("products/" + product?._id);
                       }}
-                      variant='outline'
-                      className='w-full text-white'
+                      variant="outline"
+                      className="w-full text-white"
                     >
                       Go to the product
                     </Button>
@@ -296,7 +296,7 @@ const MainDashboard = () => {
           <LoadingWrapper />
         </div>
       )}
-      <div className='mt-6 flex gap-10 items-center justify-center text-xl text-gray-700'>
+      <div className="mt-6 flex gap-10 items-center justify-center text-xl text-gray-700">
         <button
           className={`${page === 1 ? "cursor-not-allowed" : "cursor-pointer"} bg-gray-700 px-2 py-2 w-24 text-white rounded-3xl flex justify-center items-center gap-1 text-lg`}
           disabled={page === 1}

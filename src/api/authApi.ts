@@ -64,7 +64,7 @@ export interface cartResponse {
         productId: string;
         quantity: string;
         _id: string;
-      }
+      },
     ];
     _id: string;
     createdAt: string;
@@ -80,7 +80,7 @@ export interface getCartResponse {
       productId: string;
       quantity: number;
       _id: string;
-    }
+    },
   ];
   createdAt: string;
   updatedAt: string;
@@ -106,10 +106,10 @@ export function login(credentials: { email: string; password: string }) {
 
 export function getProducts(
   page: number,
-  pageSize: number
+  pageSize: number,
 ): Promise<ResponseProduct> {
   return api.get<ResponseProduct>(
-    `/products?page=${page}&pageSize=${pageSize}`
+    `/products?page=${page}&pageSize=${pageSize}`,
   );
 }
 
@@ -132,16 +132,16 @@ export function getPosts() {
 export function createPost(formData: FormData) {
   return api.post("/posts", formData, {
     headers: {
-      "Content-Type": "multipart/form-data"
-    }
+      "Content-Type": "multipart/form-data",
+    },
   });
 }
 
 export function updateUser(formData: FormData, userId: string) {
   return api.post(`/users/updateProdile/${userId}`, formData, {
     headers: {
-      "Content-Type": "multipart/form-data"
-    }
+      "Content-Type": "multipart/form-data",
+    },
   });
 }
 
@@ -152,8 +152,8 @@ export function getUserById(userId: string) {
 export function UpdatePostForId(formData: FormData, postId: string) {
   return api.post(`/posts/update/${postId}`, formData, {
     headers: {
-      "Content-Type": "multipart/form-data"
-    }
+      "Content-Type": "multipart/form-data",
+    },
   });
 }
 
@@ -189,18 +189,18 @@ export function getPrivacyText(): Promise<PrivacyResponse[]> {
 }
 
 export function addPrivacyText(
-  PrivacyPolicyText: string
+  PrivacyPolicyText: string,
 ): Promise<AddPrivacyResponse> {
   return api.post<AddPrivacyResponse>("/privacy-policy", {
-    PrivacyPolicyText
+    PrivacyPolicyText,
   });
 }
 
 export function addTermsText(
-  TermsConditionsText: string
+  TermsConditionsText: string,
 ): Promise<AddTermsResponse> {
   return api.post<AddTermsResponse>("/terms-conditions", {
-    TermsConditionsText
+    TermsConditionsText,
   });
 }
 
@@ -213,7 +213,7 @@ export function getTermsText(): Promise<TermsResponse[]> {
 }
 export function getSubScribeList(userId: string): Promise<SubscribeResponse> {
   return api.get<SubscribeResponse>(
-    `/email-signup/get-emails?userId=${userId}`
+    `/email-signup/get-emails?userId=${userId}`,
   );
 }
 
@@ -222,7 +222,7 @@ export function deleteList(payload: {
   email: string;
 }): Promise<UnsubscribeResponse> {
   return api.delete<UnsubscribeResponse>(`email-signup/unSubscribe`, {
-    data: payload
+    data: payload,
   });
 }
 
@@ -243,7 +243,7 @@ export function addToCart(
       quantity: number;
     }[];
   },
-  userId: string
+  userId: string,
 ): Promise<cartResponse> {
   return api.post<cartResponse>(`/cart/${userId}/add`, credentials);
 }
@@ -253,7 +253,7 @@ export function getCartData(): Promise<getCartResponse> {
 }
 export const authApi = {
   login: (creds: { email: string; password: string }) => login(creds),
-  me: () => api.get("/auth/me")
+  me: () => api.get("/auth/me"),
 };
 
 export default authApi;

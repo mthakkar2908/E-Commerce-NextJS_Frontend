@@ -10,7 +10,7 @@ import { AddPrivacy, GetPrivacyText } from "@/src/store/commonSlice";
 import "react-quill-new/dist/quill.snow.css";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), {
-  ssr: false
+  ssr: false,
 });
 export interface PrivacyResponse {
   _id: string;
@@ -51,19 +51,19 @@ const PrivacyPolicy = () => {
   }
 
   return (
-    <div className='max-w-5xl mx-auto my-10 px-6'>
-      <h1 className='text-3xl font-bold mb-6'>Privacy Policy</h1>
+    <div className="max-w-5xl mx-auto my-10 px-6">
+      <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
 
-      <div className='bg-gray-500 p-6 rounded-lg shadow-md'>
+      <div className="bg-gray-500 p-6 rounded-lg shadow-md">
         <ReactQuill
-          theme='snow'
+          theme="snow"
           value={privacyData}
           onChange={setPrivacyData}
         />
 
         <button
           onClick={handleAddPrivacyText}
-          className='mt-6 bg-black text-white px-6 py-2 rounded-md hover:opacity-90'
+          className="mt-6 bg-black text-white px-6 py-2 rounded-md hover:opacity-90"
         >
           Save Privacy Policy
         </button>

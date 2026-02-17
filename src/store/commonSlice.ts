@@ -77,30 +77,32 @@ export const GetPrivacyText = createAsyncThunk(
 );
 
 export const AddPrivacy = createAsyncThunk(
-  'common/AddPrivacy',
-  async(PrivacyPolicyText  :string, {rejectWithValue}) => {
+  "common/AddPrivacy",
+  async (PrivacyPolicyText: string, { rejectWithValue }) => {
     try {
       const res = await addPrivacyText(PrivacyPolicyText);
       return res;
     } catch (error: any) {
-      return rejectWithValue(error?.response?.data?.message || 'failed to add privacy data');
-      
+      return rejectWithValue(
+        error?.response?.data?.message || "failed to add privacy data",
+      );
     }
-  }
-)
+  },
+);
 
 export const AddTerms = createAsyncThunk(
-  'common/AddTerms',
-  async( TermsConditionsText : string, {rejectWithValue}) => {
+  "common/AddTerms",
+  async (TermsConditionsText: string, { rejectWithValue }) => {
     try {
       const res = await addTermsText(TermsConditionsText);
       return res;
     } catch (error: any) {
-      return rejectWithValue(error?.response?.data?.message || 'failed to add terms data');
-      
+      return rejectWithValue(
+        error?.response?.data?.message || "failed to add terms data",
+      );
     }
-  }
-)
+  },
+);
 
 export const GetTermsText = createAsyncThunk(
   "common/GetTermsText",
