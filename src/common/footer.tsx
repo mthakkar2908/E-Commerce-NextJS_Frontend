@@ -28,7 +28,7 @@ const Footer = () => {
     setSendEmailLoading(true);
     try {
       const response = await dispatch(
-        CreateEmailSubScription({ email: valueEmail, userId })
+        CreateEmailSubScription({ email: valueEmail, userId }),
       ).unwrap();
 
       setValueEmail("");
@@ -38,8 +38,8 @@ const Footer = () => {
         style: {
           borderRadius: "8px",
           background: "#333",
-          color: "#fff"
-        }
+          color: "#fff",
+        },
       });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (emailError: any) {
@@ -49,8 +49,8 @@ const Footer = () => {
         style: {
           borderRadius: "8px",
           background: "#333",
-          color: "#fff"
-        }
+          color: "#fff",
+        },
       });
     } finally {
       setSendEmailLoading(false);
@@ -58,36 +58,36 @@ const Footer = () => {
   };
 
   return (
-    <div className='bottom-0 z-50 bg-gray-300 shadow-md text-primary px-10 pt-10 pb-3'>
+    <div className="bottom-0 z-50 bg-gray-300 shadow-md text-primary px-10 pt-10 pb-3">
       <Toaster />
-      <div className='grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4 max-w-7xl mx-auto'>
-        <div className='flex flex-col gap-3'>
-          <h1 className='text-indigo-600 font-bold text-lg'>Next js APP</h1>
-          <p className='text-sm leading-relaxed'>
+      <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-4 max-w-7xl mx-auto">
+        <div className="flex flex-col gap-3">
+          <h1 className="text-indigo-600 font-bold text-lg">Next js APP</h1>
+          <p className="text-sm leading-relaxed">
             Discover quality products with a smooth, reliable shopping
             experience.
           </p>
 
-          <div className='flex gap-4 mt-2'>
-            <Instagram className='cursor-pointer hover:text-[#E1306C]' />
-            <Facebook className='cursor-pointer hover:text-[#1877F2]' />
-            <Twitter className='cursor-pointer hover:text-[#1DA1F2]' />
-            <Youtube className='cursor-pointer hover:text-[#FF0000]' />
+          <div className="flex gap-4 mt-2">
+            <Instagram className="cursor-pointer hover:text-[#E1306C]" />
+            <Facebook className="cursor-pointer hover:text-[#1877F2]" />
+            <Twitter className="cursor-pointer hover:text-[#1DA1F2]" />
+            <Youtube className="cursor-pointer hover:text-[#FF0000]" />
           </div>
 
-          <div className='text-sm mt-6 space-y-1'>
+          <div className="text-sm mt-6 space-y-1">
             <p>
               © 2026{" "}
               <span
                 onClick={() => router.push("/privacy-policy")}
-                className='font-semibold cursor-pointer hover:text-red-600'
+                className="font-semibold cursor-pointer hover:text-red-600"
               >
                 Privacy Policy
               </span>
             </p>
             <p
               onClick={() => router.push("/terms-conditions")}
-              className='font-semibold cursor-pointer hover:text-red-600'
+              className="font-semibold cursor-pointer hover:text-red-600"
             >
               Terms & Conditions
             </p>
@@ -95,18 +95,18 @@ const Footer = () => {
         </div>
 
         <div>
-          <ul className='flex flex-col gap-3 text-sm'>
-            <li className='font-semibold'>Company</li>
-            <li className='hover:text-red-600 cursor-pointer'>Blogs</li>
+          <ul className="flex flex-col gap-3 text-sm">
+            <li className="font-semibold">Company</li>
+            <li className="hover:text-red-600 cursor-pointer">Blogs</li>
             <li
               onClick={() => router.push("/contact-us?section=faq")}
-              className='hover:text-red-600 cursor-pointer'
+              className="hover:text-red-600 cursor-pointer"
             >
               FAQ
             </li>
             <li
               onClick={() => router.push("/contact-us")}
-              className='hover:text-red-600 cursor-pointer'
+              className="hover:text-red-600 cursor-pointer"
             >
               Contact
             </li>
@@ -114,43 +114,43 @@ const Footer = () => {
         </div>
 
         <div>
-          <ul className='flex flex-col gap-3 text-sm'>
-            <li className='font-semibold'>Support</li>
+          <ul className="flex flex-col gap-3 text-sm">
+            <li className="font-semibold">Support</li>
             <li
               onClick={() => router.push("/orders")}
-              className='hover:text-red-600 cursor-pointer'
+              className="hover:text-red-600 cursor-pointer"
             >
               Order Status
             </li>
-            <li className='hover:text-red-600 cursor-pointer'>Wholesale</li>
-            <li className='hover:text-red-600 cursor-pointer'>Career</li>
+            <li className="hover:text-red-600 cursor-pointer">Wholesale</li>
+            <li className="hover:text-red-600 cursor-pointer">Career</li>
           </ul>
         </div>
 
-        <div className='flex flex-col gap-4'>
-          <p className='text-indigo-600 font-bold'>For more, type your email</p>
-          <p className='text-sm leading-relaxed'>
+        <div className="flex flex-col gap-4">
+          <p className="text-indigo-600 font-bold">For more, type your email</p>
+          <p className="text-sm leading-relaxed">
             Get first list on new arrivals & advance notice on everything.
           </p>
 
-          <div className='flex flex-col gap-2'>
+          <div className="flex flex-col gap-2">
             <input
-              type='email'
+              type="email"
               value={valueEmail}
               onChange={(e) => setValueEmail(e.target.value)}
-              className='py-2 w-full sm:w-auto flex-1 border border-indigo-600 rounded-3xl px-4 text-sm'
-              placeholder='Enter your email here...'
+              className="py-2 w-full sm:w-auto flex-1 border border-indigo-600 rounded-3xl px-4 text-sm"
+              placeholder="Enter your email here..."
             />
             <p
               onClick={() => setOpenSubscribeList(true)}
-              className='text-xs mt-[-5] mb-2 text-red-600 underline cursor-pointer'
+              className="text-xs mt-[-5] mb-2 text-red-600 underline cursor-pointer"
             >
               Your Subscribe List
             </p>
             <Button
               onClick={handleEmailSignup}
               disabled={!valueEmail || sendEmailLoading}
-              className='h-9 rounded-3xl px-5 text-sm'
+              className="h-9 rounded-3xl px-5 text-sm"
             >
               {sendEmailLoading ? "Sending mail..." : "Subscribe"}
             </Button>
