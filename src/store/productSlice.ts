@@ -5,7 +5,6 @@ import {
   searchProducts,
   updateFav,
 } from "../api/authApi";
-import { ParamasProducts } from "./authSlice";
 import { ResponseProduct } from "../modules/Dashboard/MainDashboard";
 
 export interface Product {
