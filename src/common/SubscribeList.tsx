@@ -15,7 +15,7 @@ interface SubscribeListProps {
 
 const SubscribeList: React.FC<SubscribeListProps> = ({
   openSubscribeList,
-  setOpenSubscribeList
+  setOpenSubscribeList,
 }) => {
   const dispatch = useAppDispatch();
   const { user } = useSelector((state: any) => state.auth);
@@ -38,7 +38,7 @@ const SubscribeList: React.FC<SubscribeListProps> = ({
 
   const handleDelete = async (id: string, email: string) => {
     const promise = dispatch(
-      deleteSubscribeChannel({ userId: id, email })
+      deleteSubscribeChannel({ userId: id, email }),
     ).unwrap();
 
     toast.promise(promise, {
@@ -47,31 +47,31 @@ const SubscribeList: React.FC<SubscribeListProps> = ({
         fetchSubscribeData();
         return response?.message ?? "Unsubscribed Successfully";
       },
-      error: (error) => error ?? "Error to delete the subscribe channel"
+      error: (error) => error ?? "Error to delete the subscribe channel",
     });
   };
 
   return (
     <Dialog open={openSubscribeList} onOpenChange={setOpenSubscribeList}>
       <Toaster />
-      <DialogContent className='max-h-[80vh] overflow-y-auto'>
-        <DialogTitle className='text-2xl'>Subscribe List</DialogTitle>
+      <DialogContent className="max-h-[80vh] overflow-y-auto">
+        <DialogTitle className="text-2xl">Subscribe List</DialogTitle>
 
         {emailData.length === 0 ? (
-          <div className='text-center py-6'>
-            <p className='text-lg font-semibold'>No subscribed emails found</p>
-            <p className='text-sm text-gray-500 mt-2'>
+          <div className="text-center py-6">
+            <p className="text-lg font-semibold">No subscribed emails found</p>
+            <p className="text-sm text-gray-500 mt-2">
               Subscribe with your email to receive the latest arrivals and
               updates.
             </p>
           </div>
         ) : (
           emailData.map((item) => (
-            <div key={item.email} className='p-2 border-b flex justify-between'>
+            <div key={item.email} className="p-2 border-b flex justify-between">
               <p>{item.email}</p>
               <span
                 onClick={() => handleDelete(item._id, item.email)}
-                className='cursor-pointer hover:text-gray-400'
+                className="cursor-pointer hover:text-gray-400"
               >
                 UnSubscirbe
               </span>
