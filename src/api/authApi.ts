@@ -150,7 +150,7 @@ export function getUserById(userId: string) {
 }
 
 export function UpdatePostForId(formData: FormData, postId: string) {
-  return api.post(`/posts/update/${postId}`, formData, {
+  return api.post(`/posts/updatePost/${postId}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

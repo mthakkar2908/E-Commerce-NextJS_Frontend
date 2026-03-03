@@ -15,7 +15,6 @@ export interface ParamasProducts {
 }
 
 export interface AuthState {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   user: any | null;
   token: string | null;
   status: "idle" | "loading" | "succeeded" | "failed";
@@ -106,7 +105,6 @@ const authSlice = createSlice({
       state.error = null;
       clearSession();
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     setSessionFromStorage(state, action: PayloadAction<any>) {
       state.user = action.payload?.user ?? null;
       state.token = action.payload?.token ?? null;
@@ -118,7 +116,6 @@ const authSlice = createSlice({
         state.status = "loading";
         state.error = null;
       })
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .addCase(login.fulfilled, (state, action: PayloadAction<any>) => {
         state.status = "succeeded";
 
@@ -133,7 +130,6 @@ const authSlice = createSlice({
         state.status = "failed";
         state.error = action.payload as string;
       })
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .addCase(UpdateUser.fulfilled, (state, action: PayloadAction<any>) => {
         const payload = action.payload?.data ?? action.payload;
 

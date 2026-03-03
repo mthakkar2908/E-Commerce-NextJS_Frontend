@@ -41,7 +41,7 @@ type AddToCartPayload = {
   credentials: {
     items: {
       productId: string;
-      quantity: number; // 👈 IMPORTANT
+      quantity: number;
     }[];
   };
 };

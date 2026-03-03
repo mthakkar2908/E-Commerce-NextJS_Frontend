@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import {
   deleteOrderById,
@@ -101,7 +102,6 @@ const orderSlice = createSlice({
         state.status = "loading";
         state.error = null;
       })
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .addCase(GetOrders.fulfilled, (state, action: PayloadAction<any>) => {
         state.status = "succeeded";
         const payload = action.payload?.data ?? action.payload;

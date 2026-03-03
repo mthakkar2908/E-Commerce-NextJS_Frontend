@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -22,7 +23,6 @@ interface Response {
 
 const UserProfile = () => {
   const dispatch = useAppDispatch();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { user } = useSelector((state: any) => state.auth);
   const initialValues = {
     name: "",
@@ -253,7 +253,7 @@ const UserProfile = () => {
           {!isPreview ? (
             <label
               htmlFor="file-upload"
-              className="cursor-pointer absolute bottom-10 -right-4 bg-white p-2 rounded-full shadow-lg"
+              className="cursor-pointer absolute bottom-10 -right-4 bg-white dark:bg-black p-2 rounded-full shadow-lg"
             >
               <Edit2 className="w-5 h-5" />
             </label>

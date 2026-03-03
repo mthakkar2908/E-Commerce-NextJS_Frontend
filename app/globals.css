@@ -134,11 +134,40 @@ body {
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+
+.scrollbar-h {
+  scrollbar-width: thin;
+  scrollbar-color: #12345d #efefef;
+  padding-right: 4px;
+}
+.scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #12345d #efefef;
+  padding-right: 4px;
+}
+
+.scrollbar-hide {
+  scrollbar-width: none;
+  -moz-appearance: none;
+  appearance: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  @apply hidden;
+}
+.scrollbar.scrollbar-bold {
+  scrollbar-width: unset !important;
+}
+.scrollbar-bold::-webkit-scrollbar {
+  @apply !w-[30px];
+}
+
+.ql-toolbar {
+  border-radius: 12px 12px 0 0 !important;
+}
+
+.ql-container {
+  border-radius: 0 0 12px 12px !important;
+  min-height: 200px;
+  font-size: 15px;
 }

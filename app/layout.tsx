@@ -5,6 +5,7 @@ import Providers from "../src/providers/Providers";
 import Header from "@/src/common/header";
 import AuthBootstrap from "@/src/common/AuthBootstrap";
 import Footer from "@/src/common/footer";
+import { ThemeProvider } from "@/src/providers/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,10 +33,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <Header />
-          <AuthBootstrap />
-          {children}
-          <Footer />
+          <ThemeProvider>
+            <Header />
+            <AuthBootstrap />
+            {children}
+            <Footer />
+          </ThemeProvider>
         </Providers>
       </body>
     </html>

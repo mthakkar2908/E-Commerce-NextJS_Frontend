@@ -41,8 +41,9 @@ function createClient(): AxiosInstance {
       if (error?.response?.status === 401) {
         try {
           clearSession();
-        } catch {
-          // ignore
+        } 
+        catch{
+          console.error("Error occured when clearing session")
         }
       }
       return Promise.reject(error);
