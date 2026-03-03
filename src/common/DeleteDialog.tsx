@@ -4,7 +4,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle } from "lucide-react";
@@ -30,41 +30,41 @@ export function DeleteDialog({
   confirmText = "Delete",
   cancelText = "Cancel",
   isLoading = false,
-  isDangerous = true
+  isDangerous = true,
 }: DeleteDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className='sm:max-w-106.25'>
+      <DialogContent className="sm:max-w-106.25">
         <DialogHeader>
-          <div className='flex items-center gap-3'>
+          <div className="flex items-center gap-3">
             {isDangerous && (
-              <div className='rounded-full bg-red-100 p-2'>
-                <AlertTriangle className='h-6 w-6 text-red-600' />
+              <div className="rounded-full bg-red-100 p-2">
+                <AlertTriangle className="h-6 w-6 text-red-600" />
               </div>
             )}
-            <DialogTitle className='text-xl'>{title}</DialogTitle>
+            <DialogTitle className="text-xl">{title}</DialogTitle>
           </div>
-          <DialogDescription className='pt-4 text-base'>
+          <DialogDescription className="pt-4 text-base">
             {description}
           </DialogDescription>
         </DialogHeader>
 
-        <DialogFooter className='gap-2 sm:gap-1'>
+        <DialogFooter className="gap-2 sm:gap-1">
           <Button
-            type='button'
-            variant='outline'
+            type="button"
+            variant="outline"
             onClick={() => onOpenChange(false)}
             disabled={isLoading}
-            className='cursor-pointer'
+            className="cursor-pointer"
           >
             {cancelText}
           </Button>
           <Button
-            type='button'
+            type="button"
             variant={isDangerous ? "destructive" : "default"}
             onClick={onConfirm}
             disabled={isLoading}
-            className='cursor-pointer'
+            className="cursor-pointer"
           >
             {isLoading ? "Deleting..." : confirmText}
           </Button>

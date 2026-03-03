@@ -38,12 +38,12 @@ const PrivacyPolicy = () => {
   }
 
   return (
-    <div className='max-w-5xl mx-auto my-10 px-6'>
-      <h1 className='text-3xl font-bold mb-6'>Privacy Policy</h1>
+    <div className="max-w-5xl mx-auto my-10 px-6">
+      <h1 className="text-3xl font-bold mb-6">Privacy Policy</h1>
       <div
-        className='bg-gray-500 p-6 rounded-lg shadow-md'
+        className="bg-gray-500 p-6 rounded-lg shadow-md"
         dangerouslySetInnerHTML={{
-          __html: privacyData.replace(/&nbsp;/g, " ")
+          __html: privacyData.replace(/&nbsp;/g, " "),
         }}
       />
     </div>

@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import "react-quill-new/dist/quill.snow.css";
 
-
 export interface TermsResponse {
   _id: string;
   TermsConditionsText: string;
@@ -35,19 +34,18 @@ const TermsCondition = () => {
     fetchTermsData();
   }, [dispatch]);
 
-
   if (termsLoading) {
     return <LoadingWrapper />;
   }
 
   return (
-    <div className='mx-10 my-10'>
+    <div className="mx-10 my-10">
       <Toaster />
-      <h1 className='font-bold text-2xl'>Terms & Conditions</h1>
+      <h1 className="font-bold text-2xl">Terms & Conditions</h1>
       <div
-        className='bg-gray-500 p-6 rounded-lg shadow-md'
+        className="bg-gray-500 p-6 rounded-lg shadow-md"
         dangerouslySetInnerHTML={{
-          __html: termsData.replace(/&nbsp;/g, " ")
+          __html: termsData.replace(/&nbsp;/g, " "),
         }}
       />
     </div>
