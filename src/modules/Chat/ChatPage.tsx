@@ -39,7 +39,6 @@ export default function ChatPage() {
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const socketRef = useRef<any>(null);
 
-  /* ============ USERS LIST ============ */
   useEffect(() => {
     const userData = async () => {
       try {
@@ -53,7 +52,6 @@ export default function ChatPage() {
     userData();
   }, [dispatch]);
 
-  /* ============ LOAD CONVERSATION ============ */
   const loadConversation = useCallback(
     (selectedUserData: any) => {
       if (!socketRef.current || !userId) return;
@@ -65,13 +63,12 @@ export default function ChatPage() {
 
       socketRef.current.emit("getHistory", {
         userId1: userId,
-        userId2: selectedUserData._id,
+        userId2: selectedUserData._id
       });
     },
-    [userId],
+    [userId]
   );
 
-  /* ============ SOCKET SETUP ============ */
   useEffect(() => {
     const socket = getSocket();
     socketRef.current = socket;
@@ -80,7 +77,7 @@ export default function ChatPage() {
       if (userId && user?.name) {
         socket.emit("registerUser", {
           userId,
-          userName: user.name,
+          userName: user.name
         });
       }
 
@@ -93,23 +90,20 @@ export default function ChatPage() {
       }
     });
 
-    /* RECEIVE MESSAGE */
     socket.on("receiveMessage", (data: Message) => {
       setMessages((prev) => [...prev, data]);
 
       if (selectedUser && data.senderId === selectedUser._id) {
         socket.emit("markAsRead", {
-          messageIds: [data._id],
+          messageIds: [data._id]
         });
       }
     });
 
-    /* RECEIVE FILE */
     socket.on("receiveFile", (data: Message) => {
       setMessages((prev) => [...prev, data]);
     });
 
-    /* MESSAGE HISTORY */
     socket.on("messageHistory", (data: { messages: Message[] }) => {
       const history = data.messages.reverse();
       setMessages(history);
@@ -120,23 +114,21 @@ export default function ChatPage() {
 
       if (unreadIds.length > 0) {
         socket.emit("markAsRead", {
-          messageIds: unreadIds,
+          messageIds: unreadIds
         });
       }
     });
 
-    /* REACTION UPDATED */
     socket.on("reactionUpdated", (data: any) => {
       setMessages((prev) =>
         prev.map((msg) =>
           msg._id === data.messageId
             ? { ...msg, reactions: data.reactions }
-            : msg,
-        ),
+            : msg
+        )
       );
     });
 
-    /* TYPING INDICATOR */
     socket.on("userTyping", (data: { isTyping: boolean }) => {
       setIsTyping(data.isTyping);
     });
@@ -150,12 +142,10 @@ export default function ChatPage() {
     };
   }, [userId, user?.name, users, loadConversation, selectedUser]);
 
-  /* ============ AUTO SCROLL ============ */
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  /* ============ SEND MESSAGE ============ */
   const sendMessage = () => {
     if (!text.trim() || !selectedUser) return;
 
@@ -163,7 +153,7 @@ export default function ChatPage() {
       senderId: userId,
       senderName: user?.name || "You",
       recipientId: selectedUser._id,
-      message: text,
+      message: text
     });
 
     setText("");
@@ -175,7 +165,7 @@ export default function ChatPage() {
 
     socketRef.current.emit("typing", {
       recipientId: selectedUser._id,
-      isTyping: true,
+      isTyping: true
     });
 
     if (typingTimeoutRef.current) {
@@ -185,32 +175,29 @@ export default function ChatPage() {
     typingTimeoutRef.current = setTimeout(() => {
       socketRef.current.emit("typing", {
         recipientId: selectedUser._id,
-        isTyping: false,
+        isTyping: false
       });
     }, 900);
   };
 
-  /* ============ ADD REACTION ============ */
   const addReaction = (messageId: string, emoji: string) => {
     socketRef.current.emit("addReaction", {
       messageId,
       emoji,
       senderId: userId,
-      recipientId: selectedUser._id,
+      recipientId: selectedUser._id
     });
   };
 
-  /* ============ REMOVE REACTION ============ */
   const removeReaction = (messageId: string, emoji: string) => {
     socketRef.current.emit("removeReaction", {
       messageId,
       emoji,
       senderId: userId,
-      recipientId: selectedUser._id,
+      recipientId: selectedUser._id
     });
   };
 
-  /* ============ HANDLE FILE UPLOAD ============ */
   const handleFileUpload = async (file: File) => {
     const reader = new FileReader();
 
@@ -224,14 +211,13 @@ export default function ChatPage() {
         fileName: file.name,
         fileType: file.type,
         fileData: fileData,
-        fileSize: file.size,
+        fileSize: file.size
       });
     };
 
     reader.readAsDataURL(file);
   };
 
-  /* ============ DOWNLOAD FILE ============ */
   const downloadFile = (fileData: string, fileName: string) => {
     const link = document.createElement("a");
     link.href = fileData;
@@ -239,66 +225,91 @@ export default function ChatPage() {
     link.click();
   };
 
-  /* ============ UI ============ */
   return (
-    <div className="flex h-screen bg-slate-50">
-      {/* CONTACT LIST */}
-      <div className="w-64 border-r bg-white shadow-sm overflow-y-auto">
-        <div className="sticky top-0 p-4 border-b bg-white z-10">
-          <h1 className="font-bold text-lg">Messages</h1>
+    <div className='flex h-screen bg-gray-50 dark:bg-slate-950'>
+      <div className='w-80 border-r border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-y-auto scrollbar flex flex-col'>
+        <div className='sticky top-0 p-6 border-b border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 z-10'>
+          <h1 className='font-bold text-xl text-gray-900 dark:text-white'>
+            Messages
+          </h1>
+          <p className='text-xs text-gray-500 dark:text-slate-400 mt-1'>
+            Your conversations
+          </p>
         </div>
 
-        {users.length > 0 && (
-          <div className="flex flex-col">
+        {users.length > 0 ? (
+          <div className='flex flex-col flex-1'>
             {users.map((userresp) => (
               <div
                 key={userresp._id}
                 onClick={() => loadConversation(userresp)}
-                className={`p-4 flex gap-3 cursor-pointer hover:bg-slate-100 border-b transition ${
+                className={`px-4 py-3 mx-3 my-1 flex gap-3 cursor-pointer rounded-lg transition-all duration-200 ${
                   selectedUser?._id === userresp._id
-                    ? "bg-indigo-50 border-l-4 border-l-indigo-600"
-                    : ""
+                    ? "bg-indigo-50 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-800"
+                    : "hover:bg-gray-100 dark:hover:bg-slate-800/50"
                 }`}
               >
-                <img
-                  src={`${process.env.NEXT_PUBLIC_FRONTEND_URL}${userresp.profile_image}`}
-                  alt={userresp.name}
-                  className="w-10 h-10 rounded-full object-cover flex-shrink-0"
-                />
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-gray-700 truncate">
+                {userresp.profile_image ? (
+                  <img
+                    src={`${process.env.NEXT_PUBLIC_FRONTEND_URL}${userresp.profile_image}`}
+                    alt={userresp.name}
+                    className='w-12 h-12 rounded-full object-cover shrink-0 ring-2 ring-gray-200 dark:ring-slate-700'
+                  />
+                ) : (
+                  <div className='w-12 h-12 rounded-full bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center shrink-0 ring-2 ring-gray-200 dark:ring-slate-700'>
+                    <span className='text-white font-bold text-sm'>
+                      {userresp.name?.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                )}
+
+                <div className='flex-1 min-w-0'>
+                  <p className='font-semibold text-gray-900 dark:text-white text-sm truncate'>
                     {userresp._id === userId
                       ? `${userresp.name} (You)`
                       : userresp.name}
                   </p>
-                  <p className="text-xs text-gray-500 truncate">
+                  <p className='text-xs text-gray-500 dark:text-slate-400 truncate'>
                     {userresp.email}
                   </p>
                 </div>
               </div>
             ))}
           </div>
+        ) : (
+          <div className='flex-1 flex items-center justify-center'>
+            <div className='text-center text-gray-400 dark:text-slate-500'>
+              <p className='text-sm'>No users available</p>
+            </div>
+          </div>
         )}
       </div>
 
-      {/* CHAT AREA */}
-      <div className="flex-1 flex flex-col h-screen">
+      <div className='flex-1 flex flex-col h-screen bg-white dark:bg-slate-900'>
         {selectedUser ? (
           <>
-            {/* HEADER */}
-            <div className="bg-white border-b px-6 py-4 shadow-sm">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <img
-                    src={`${process.env.NEXT_PUBLIC_FRONTEND_URL}${selectedUser.profile_image}`}
-                    alt={selectedUser.name}
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
+            <div className='border-b border-gray-200 dark:border-slate-800 px-8 py-5 bg-white dark:bg-slate-900 shadow-sm'>
+              <div className='flex items-center justify-between'>
+                <div className='flex items-center gap-4'>
+                  {selectedUser.profile_image ? (
+                    <img
+                      src={`${process.env.NEXT_PUBLIC_FRONTEND_URL}${selectedUser.profile_image}`}
+                      alt={selectedUser.name}
+                      className='w-12 h-12 rounded-full object-cover ring-2 ring-gray-200 dark:ring-slate-700'
+                    />
+                  ) : (
+                    <div className='w-12 h-12 rounded-full bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center ring-2 ring-gray-200 dark:ring-slate-700'>
+                      <span className='text-white font-bold text-sm'>
+                        {selectedUser.name?.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+
                   <div>
-                    <h2 className="font-semibold text-gray-500">
+                    <h2 className='font-semibold text-gray-900 dark:text-white'>
                       {selectedUser.name}
                     </h2>
-                    <p className="text-xs text-gray-500">
+                    <p className='text-xs text-gray-500 dark:text-slate-400'>
                       {selectedUser.email}
                     </p>
                   </div>
@@ -306,15 +317,15 @@ export default function ChatPage() {
               </div>
             </div>
 
-            {/* MESSAGES */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            <div className='flex-1 overflow-y-auto scrollbar p-8 space-y-4 bg-gray-50 dark:bg-slate-950'>
               {messages.length === 0 ? (
-                <div className="flex items-center justify-center h-full">
-                  <div className="text-center text-gray-400">
-                    <p className="text-lg font-semibold mb-1">
+                <div className='flex items-center justify-center h-full'>
+                  <div className='text-center'>
+                    <div className='text-5xl mb-4'>💬</div>
+                    <p className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
                       No messages yet
                     </p>
-                    <p className="text-sm">
+                    <p className='text-sm text-gray-500 dark:text-slate-400'>
                       Start a conversation with {selectedUser.name}
                     </p>
                   </div>
@@ -327,41 +338,41 @@ export default function ChatPage() {
                   return (
                     <div
                       key={i}
-                      className={`flex ${
-                        isMe ? "justify-end" : "justify-start"
-                      } group`}
+                      className={`flex ${isMe ? "justify-end" : "justify-start"} group`}
                     >
                       <div
-                        className={`max-w-xs px-4 py-2 rounded-2xl ${
+                        className={`max-w-sm px-5 py-3 rounded-2xl transition-all ${
                           isMe
-                            ? "bg-indigo-600 text-white rounded-br-none"
-                            : "bg-white text-slate-900 rounded-bl-none shadow border border-gray-200"
+                            ? "bg-indigo-600 text-white rounded-br-sm shadow-md"
+                            : "bg-white text-gray-900 dark:bg-slate-800 dark:text-white rounded-bl-sm shadow border border-gray-200 dark:border-slate-700"
                         }`}
                       >
                         {isFile ? (
-                          <div className="flex flex-col gap-2">
-                            <p className="text-sm font-medium">{msg.message}</p>
+                          <div className='flex flex-col gap-3'>
+                            <p className='text-sm font-medium'>{msg.message}</p>
                             <button
                               onClick={() =>
                                 downloadFile(msg.fileData!, msg.fileName!)
                               }
-                              className={`px-3 py-1 rounded text-xs font-medium ${
+                              className={`px-4 py-2 rounded-lg text-xs font-medium transition-colors flex items-center gap-2 w-fit ${
                                 isMe
-                                  ? "bg-indigo-500 hover:bg-indigo-700"
-                                  : "bg-gray-200 hover:bg-gray-300"
+                                  ? "bg-indigo-500 hover:bg-indigo-700 text-white"
+                                  : "bg-gray-200 hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-gray-900 dark:text-white"
                               }`}
                             >
-                              📥 Download ({(msg.fileSize! / 1024).toFixed(1)}
+                              📥 Download ({(msg.fileSize! / 1024).toFixed(1)}{" "}
                               KB)
                             </button>
                           </div>
                         ) : (
-                          <p className="text-sm">{msg.message}</p>
+                          <p className='text-sm leading-relaxed'>
+                            {msg.message}
+                          </p>
                         )}
 
                         {msg.reactions &&
                           Object.keys(msg.reactions).length > 0 && (
-                            <div className="flex gap-1 mt-2 flex-wrap">
+                            <div className='flex gap-2 mt-3 flex-wrap'>
                               {Object.entries(msg.reactions).map(
                                 ([emoji, userIds]) => (
                                   <button
@@ -373,51 +384,52 @@ export default function ChatPage() {
                                         addReaction(msg._id, emoji);
                                       }
                                     }}
-                                    className={`text-xs px-2 py-0.5 rounded-full transition ${
+                                    className={`text-xs px-3 py-1 rounded-full font-medium transition-all ${
                                       userIds.includes(userId)
                                         ? isMe
                                           ? "bg-indigo-500"
-                                          : "bg-gray-300"
+                                          : "bg-gray-300 dark:bg-slate-600"
                                         : isMe
-                                          ? "bg-indigo-500 opacity-60 hover:opacity-100"
-                                          : "bg-gray-200 hover:bg-gray-300"
+                                          ? "bg-indigo-500 opacity-50 hover:opacity-100"
+                                          : "bg-gray-200 dark:bg-slate-700 hover:bg-gray-300 dark:hover:bg-slate-600"
                                     }`}
                                   >
                                     {emoji} {userIds.length}
                                   </button>
-                                ),
+                                )
                               )}
                             </div>
                           )}
 
-                        <div className="flex justify-end gap-2 text-xs mt-1">
+                        <div className='flex justify-end gap-2 text-xs mt-2'>
                           <span
                             className={
-                              isMe ? "text-indigo-200" : "text-gray-500"
+                              isMe
+                                ? "text-indigo-200"
+                                : "text-gray-500 dark:text-slate-400"
                             }
                           >
                             {msg.createdAt
                               ? new Date(msg.createdAt).toLocaleTimeString([], {
                                   hour: "2-digit",
-                                  minute: "2-digit",
+                                  minute: "2-digit"
                                 })
                               : ""}
                           </span>
                           {isMe && (
-                            <span className={isMe ? "text-indigo-200" : ""}>
+                            <span className='text-indigo-200 font-semibold'>
                               {msg.isRead ? "✓✓" : "✓"}
                             </span>
                           )}
                         </div>
                       </div>
 
-                      {/* REACTION PICKER */}
-                      <div className="flex gap-1 ml-2 opacity-0 group-hover:opacity-100 transition">
+                      <div className='flex gap-1 ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 self-center'>
                         {EMOJI_REACTIONS.map((emoji) => (
                           <button
                             key={emoji}
                             onClick={() => addReaction(msg._id, emoji)}
-                            className="text-lg hover:scale-125 transition p-1"
+                            className='text-lg hover:scale-125 transition-transform p-1 hover:bg-gray-200 dark:hover:bg-slate-700 rounded-full'
                           >
                             {emoji}
                           </button>
@@ -429,13 +441,25 @@ export default function ChatPage() {
               )}
 
               {isTyping && (
-                <div className="flex justify-start">
-                  <div className="bg-white text-gray-400 px-4 py-2 rounded-2xl rounded-bl-none shadow border border-gray-200">
-                    <p className="text-sm">
+                <div className='flex justify-start'>
+                  <div className='bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400 px-5 py-3 rounded-2xl rounded-bl-sm shadow border border-gray-200 dark:border-slate-700'>
+                    <p className='text-sm'>
                       {selectedUser.name} is typing
-                      <span className="animate-bounce">.</span>
-                      <span className="animate-bounce delay-100">.</span>
-                      <span className="animate-bounce delay-200">.</span>
+                      <span className='animate-bounce inline-block ml-1'>
+                        .
+                      </span>
+                      <span
+                        className='animate-bounce inline-block ml-0.5'
+                        style={{ animationDelay: "0.1s" }}
+                      >
+                        .
+                      </span>
+                      <span
+                        className='animate-bounce inline-block ml-0.5'
+                        style={{ animationDelay: "0.2s" }}
+                      >
+                        .
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -444,21 +468,20 @@ export default function ChatPage() {
               <div ref={bottomRef} />
             </div>
 
-            {/* INPUT */}
-            <div className="border-t bg-white p-4 shadow-lg">
-              <div className="flex gap-2">
-                <label className="cursor-pointer">
+            <div className='border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-lg'>
+              <div className='flex gap-3'>
+                <label className='cursor-pointer shrink-0'>
                   <input
-                    type="file"
+                    type='file'
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
                         handleFileUpload(file);
                       }
                     }}
-                    className="hidden"
+                    className='hidden'
                   />
-                  <div className="px-4 py-2 bg-gray-100 rounded-xl hover:bg-gray-200 text-gray-600 font-medium cursor-pointer">
+                  <div className='w-11 h-11 bg-gray-100 dark:bg-slate-800 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-600 dark:text-gray-400 font-medium cursor-pointer flex items-center justify-center transition-colors'>
                     📎
                   </div>
                 </label>
@@ -467,13 +490,13 @@ export default function ChatPage() {
                   value={text}
                   onChange={(e) => handleTextChange(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                  placeholder="Type your message..."
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-500 rounded-xl focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                  placeholder='Type your message...'
+                  className='flex-1 px-5 py-2.5 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all placeholder-gray-500 dark:placeholder-slate-400'
                 />
 
                 <button
                   onClick={sendMessage}
-                  className="bg-indigo-600 text-white px-6 py-2 rounded-xl hover:bg-indigo-700 font-medium transition"
+                  className='bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors shadow-md hover:shadow-lg flex items-center gap-2 shrink-0'
                 >
                   Send
                 </button>
@@ -481,13 +504,13 @@ export default function ChatPage() {
             </div>
           </>
         ) : (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-center text-gray-400">
-              <p className="text-2xl mb-2">💬</p>
-              <p className="text-xl font-semibold mb-1">
+          <div className='flex items-center justify-center h-full'>
+            <div className='text-center'>
+              <div className='text-6xl mb-4'>💬</div>
+              <p className='text-2xl font-semibold text-gray-900 dark:text-white mb-2'>
                 Select a user to chat
               </p>
-              <p className="text-sm">
+              <p className='text-gray-500 dark:text-slate-400'>
                 Choose a contact from the list to start messaging
               </p>
             </div>
