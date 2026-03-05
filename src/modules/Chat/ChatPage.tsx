@@ -63,10 +63,10 @@ export default function ChatPage() {
 
       socketRef.current.emit("getHistory", {
         userId1: userId,
-        userId2: selectedUserData._id
+        userId2: selectedUserData._id,
       });
     },
-    [userId]
+    [userId],
   );
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export default function ChatPage() {
       if (userId && user?.name) {
         socket.emit("registerUser", {
           userId,
-          userName: user.name
+          userName: user.name,
         });
       }
 
@@ -95,7 +95,7 @@ export default function ChatPage() {
 
       if (selectedUser && data.senderId === selectedUser._id) {
         socket.emit("markAsRead", {
-          messageIds: [data._id]
+          messageIds: [data._id],
         });
       }
     });
@@ -114,7 +114,7 @@ export default function ChatPage() {
 
       if (unreadIds.length > 0) {
         socket.emit("markAsRead", {
-          messageIds: unreadIds
+          messageIds: unreadIds,
         });
       }
     });
@@ -124,8 +124,8 @@ export default function ChatPage() {
         prev.map((msg) =>
           msg._id === data.messageId
             ? { ...msg, reactions: data.reactions }
-            : msg
-        )
+            : msg,
+        ),
       );
     });
 
@@ -153,7 +153,7 @@ export default function ChatPage() {
       senderId: userId,
       senderName: user?.name || "You",
       recipientId: selectedUser._id,
-      message: text
+      message: text,
     });
 
     setText("");
@@ -165,7 +165,7 @@ export default function ChatPage() {
 
     socketRef.current.emit("typing", {
       recipientId: selectedUser._id,
-      isTyping: true
+      isTyping: true,
     });
 
     if (typingTimeoutRef.current) {
@@ -175,7 +175,7 @@ export default function ChatPage() {
     typingTimeoutRef.current = setTimeout(() => {
       socketRef.current.emit("typing", {
         recipientId: selectedUser._id,
-        isTyping: false
+        isTyping: false,
       });
     }, 900);
   };
@@ -185,7 +185,7 @@ export default function ChatPage() {
       messageId,
       emoji,
       senderId: userId,
-      recipientId: selectedUser._id
+      recipientId: selectedUser._id,
     });
   };
 
@@ -194,7 +194,7 @@ export default function ChatPage() {
       messageId,
       emoji,
       senderId: userId,
-      recipientId: selectedUser._id
+      recipientId: selectedUser._id,
     });
   };
 
@@ -211,7 +211,7 @@ export default function ChatPage() {
         fileName: file.name,
         fileType: file.type,
         fileData: fileData,
-        fileSize: file.size
+        fileSize: file.size,
       });
     };
 
@@ -226,19 +226,19 @@ export default function ChatPage() {
   };
 
   return (
-    <div className='flex h-screen bg-gray-50 dark:bg-slate-950'>
-      <div className='w-80 border-r border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-y-auto scrollbar flex flex-col'>
-        <div className='sticky top-0 p-6 border-b border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 z-10'>
-          <h1 className='font-bold text-xl text-gray-900 dark:text-white'>
+    <div className="flex h-screen bg-gray-50 dark:bg-slate-950">
+      <div className="w-80 border-r border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm overflow-y-auto scrollbar flex flex-col">
+        <div className="sticky top-0 p-6 border-b border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 z-10">
+          <h1 className="font-bold text-xl text-gray-900 dark:text-white">
             Messages
           </h1>
-          <p className='text-xs text-gray-500 dark:text-slate-400 mt-1'>
+          <p className="text-xs text-gray-500 dark:text-slate-400 mt-1">
             Your conversations
           </p>
         </div>
 
         {users.length > 0 ? (
-          <div className='flex flex-col flex-1'>
+          <div className="flex flex-col flex-1">
             {users.map((userresp) => (
               <div
                 key={userresp._id}
@@ -253,23 +253,23 @@ export default function ChatPage() {
                   <img
                     src={`${process.env.NEXT_PUBLIC_FRONTEND_URL}${userresp.profile_image}`}
                     alt={userresp.name}
-                    className='w-12 h-12 rounded-full object-cover shrink-0 ring-2 ring-gray-200 dark:ring-slate-700'
+                    className="w-12 h-12 rounded-full object-cover shrink-0 ring-2 ring-gray-200 dark:ring-slate-700"
                   />
                 ) : (
-                  <div className='w-12 h-12 rounded-full bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center shrink-0 ring-2 ring-gray-200 dark:ring-slate-700'>
-                    <span className='text-white font-bold text-sm'>
+                  <div className="w-12 h-12 rounded-full bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center shrink-0 ring-2 ring-gray-200 dark:ring-slate-700">
+                    <span className="text-white font-bold text-sm">
                       {userresp.name?.charAt(0).toUpperCase()}
                     </span>
                   </div>
                 )}
 
-                <div className='flex-1 min-w-0'>
-                  <p className='font-semibold text-gray-900 dark:text-white text-sm truncate'>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-gray-900 dark:text-white text-sm truncate">
                     {userresp._id === userId
                       ? `${userresp.name} (You)`
                       : userresp.name}
                   </p>
-                  <p className='text-xs text-gray-500 dark:text-slate-400 truncate'>
+                  <p className="text-xs text-gray-500 dark:text-slate-400 truncate">
                     {userresp.email}
                   </p>
                 </div>
@@ -277,39 +277,39 @@ export default function ChatPage() {
             ))}
           </div>
         ) : (
-          <div className='flex-1 flex items-center justify-center'>
-            <div className='text-center text-gray-400 dark:text-slate-500'>
-              <p className='text-sm'>No users available</p>
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center text-gray-400 dark:text-slate-500">
+              <p className="text-sm">No users available</p>
             </div>
           </div>
         )}
       </div>
 
-      <div className='flex-1 flex flex-col h-screen bg-white dark:bg-slate-900'>
+      <div className="flex-1 flex flex-col h-screen bg-white dark:bg-slate-900">
         {selectedUser ? (
           <>
-            <div className='border-b border-gray-200 dark:border-slate-800 px-8 py-5 bg-white dark:bg-slate-900 shadow-sm'>
-              <div className='flex items-center justify-between'>
-                <div className='flex items-center gap-4'>
+            <div className="border-b border-gray-200 dark:border-slate-800 px-8 py-5 bg-white dark:bg-slate-900 shadow-sm">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
                   {selectedUser.profile_image ? (
                     <img
                       src={`${process.env.NEXT_PUBLIC_FRONTEND_URL}${selectedUser.profile_image}`}
                       alt={selectedUser.name}
-                      className='w-12 h-12 rounded-full object-cover ring-2 ring-gray-200 dark:ring-slate-700'
+                      className="w-12 h-12 rounded-full object-cover ring-2 ring-gray-200 dark:ring-slate-700"
                     />
                   ) : (
-                    <div className='w-12 h-12 rounded-full bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center ring-2 ring-gray-200 dark:ring-slate-700'>
-                      <span className='text-white font-bold text-sm'>
+                    <div className="w-12 h-12 rounded-full bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center ring-2 ring-gray-200 dark:ring-slate-700">
+                      <span className="text-white font-bold text-sm">
                         {selectedUser.name?.charAt(0).toUpperCase()}
                       </span>
                     </div>
                   )}
 
                   <div>
-                    <h2 className='font-semibold text-gray-900 dark:text-white'>
+                    <h2 className="font-semibold text-gray-900 dark:text-white">
                       {selectedUser.name}
                     </h2>
-                    <p className='text-xs text-gray-500 dark:text-slate-400'>
+                    <p className="text-xs text-gray-500 dark:text-slate-400">
                       {selectedUser.email}
                     </p>
                   </div>
@@ -317,15 +317,15 @@ export default function ChatPage() {
               </div>
             </div>
 
-            <div className='flex-1 overflow-y-auto scrollbar p-8 space-y-4 bg-gray-50 dark:bg-slate-950'>
+            <div className="flex-1 overflow-y-auto scrollbar p-8 space-y-4 bg-gray-50 dark:bg-slate-950">
               {messages.length === 0 ? (
-                <div className='flex items-center justify-center h-full'>
-                  <div className='text-center'>
-                    <div className='text-5xl mb-4'>💬</div>
-                    <p className='text-lg font-semibold text-gray-900 dark:text-white mb-2'>
+                <div className="flex items-center justify-center h-full">
+                  <div className="text-center">
+                    <div className="text-5xl mb-4">💬</div>
+                    <p className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                       No messages yet
                     </p>
-                    <p className='text-sm text-gray-500 dark:text-slate-400'>
+                    <p className="text-sm text-gray-500 dark:text-slate-400">
                       Start a conversation with {selectedUser.name}
                     </p>
                   </div>
@@ -348,8 +348,8 @@ export default function ChatPage() {
                         }`}
                       >
                         {isFile ? (
-                          <div className='flex flex-col gap-3'>
-                            <p className='text-sm font-medium'>{msg.message}</p>
+                          <div className="flex flex-col gap-3">
+                            <p className="text-sm font-medium">{msg.message}</p>
                             <button
                               onClick={() =>
                                 downloadFile(msg.fileData!, msg.fileName!)
@@ -365,14 +365,14 @@ export default function ChatPage() {
                             </button>
                           </div>
                         ) : (
-                          <p className='text-sm leading-relaxed'>
+                          <p className="text-sm leading-relaxed">
                             {msg.message}
                           </p>
                         )}
 
                         {msg.reactions &&
                           Object.keys(msg.reactions).length > 0 && (
-                            <div className='flex gap-2 mt-3 flex-wrap'>
+                            <div className="flex gap-2 mt-3 flex-wrap">
                               {Object.entries(msg.reactions).map(
                                 ([emoji, userIds]) => (
                                   <button
@@ -396,12 +396,12 @@ export default function ChatPage() {
                                   >
                                     {emoji} {userIds.length}
                                   </button>
-                                )
+                                ),
                               )}
                             </div>
                           )}
 
-                        <div className='flex justify-end gap-2 text-xs mt-2'>
+                        <div className="flex justify-end gap-2 text-xs mt-2">
                           <span
                             className={
                               isMe
@@ -412,24 +412,24 @@ export default function ChatPage() {
                             {msg.createdAt
                               ? new Date(msg.createdAt).toLocaleTimeString([], {
                                   hour: "2-digit",
-                                  minute: "2-digit"
+                                  minute: "2-digit",
                                 })
                               : ""}
                           </span>
                           {isMe && (
-                            <span className='text-indigo-200 font-semibold'>
+                            <span className="text-indigo-200 font-semibold">
                               {msg.isRead ? "✓✓" : "✓"}
                             </span>
                           )}
                         </div>
                       </div>
 
-                      <div className='flex gap-1 ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 self-center'>
+                      <div className="flex gap-1 ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 self-center">
                         {EMOJI_REACTIONS.map((emoji) => (
                           <button
                             key={emoji}
                             onClick={() => addReaction(msg._id, emoji)}
-                            className='text-lg hover:scale-125 transition-transform p-1 hover:bg-gray-200 dark:hover:bg-slate-700 rounded-full'
+                            className="text-lg hover:scale-125 transition-transform p-1 hover:bg-gray-200 dark:hover:bg-slate-700 rounded-full"
                           >
                             {emoji}
                           </button>
@@ -441,21 +441,21 @@ export default function ChatPage() {
               )}
 
               {isTyping && (
-                <div className='flex justify-start'>
-                  <div className='bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400 px-5 py-3 rounded-2xl rounded-bl-sm shadow border border-gray-200 dark:border-slate-700'>
-                    <p className='text-sm'>
+                <div className="flex justify-start">
+                  <div className="bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400 px-5 py-3 rounded-2xl rounded-bl-sm shadow border border-gray-200 dark:border-slate-700">
+                    <p className="text-sm">
                       {selectedUser.name} is typing
-                      <span className='animate-bounce inline-block ml-1'>
+                      <span className="animate-bounce inline-block ml-1">
                         .
                       </span>
                       <span
-                        className='animate-bounce inline-block ml-0.5'
+                        className="animate-bounce inline-block ml-0.5"
                         style={{ animationDelay: "0.1s" }}
                       >
                         .
                       </span>
                       <span
-                        className='animate-bounce inline-block ml-0.5'
+                        className="animate-bounce inline-block ml-0.5"
                         style={{ animationDelay: "0.2s" }}
                       >
                         .
@@ -468,20 +468,20 @@ export default function ChatPage() {
               <div ref={bottomRef} />
             </div>
 
-            <div className='border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-lg'>
-              <div className='flex gap-3'>
-                <label className='cursor-pointer shrink-0'>
+            <div className="border-t border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-lg">
+              <div className="flex gap-3">
+                <label className="cursor-pointer shrink-0">
                   <input
-                    type='file'
+                    type="file"
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) {
                         handleFileUpload(file);
                       }
                     }}
-                    className='hidden'
+                    className="hidden"
                   />
-                  <div className='w-11 h-11 bg-gray-100 dark:bg-slate-800 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-600 dark:text-gray-400 font-medium cursor-pointer flex items-center justify-center transition-colors'>
+                  <div className="w-11 h-11 bg-gray-100 dark:bg-slate-800 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-600 dark:text-gray-400 font-medium cursor-pointer flex items-center justify-center transition-colors">
                     📎
                   </div>
                 </label>
@@ -490,13 +490,13 @@ export default function ChatPage() {
                   value={text}
                   onChange={(e) => handleTextChange(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                  placeholder='Type your message...'
-                  className='flex-1 px-5 py-2.5 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all placeholder-gray-500 dark:placeholder-slate-400'
+                  placeholder="Type your message..."
+                  className="flex-1 px-5 py-2.5 border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all placeholder-gray-500 dark:placeholder-slate-400"
                 />
 
                 <button
                   onClick={sendMessage}
-                  className='bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors shadow-md hover:shadow-lg flex items-center gap-2 shrink-0'
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors shadow-md hover:shadow-lg flex items-center gap-2 shrink-0"
                 >
                   Send
                 </button>
@@ -504,13 +504,13 @@ export default function ChatPage() {
             </div>
           </>
         ) : (
-          <div className='flex items-center justify-center h-full'>
-            <div className='text-center'>
-              <div className='text-6xl mb-4'>💬</div>
-              <p className='text-2xl font-semibold text-gray-900 dark:text-white mb-2'>
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center">
+              <div className="text-6xl mb-4">💬</div>
+              <p className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
                 Select a user to chat
               </p>
-              <p className='text-gray-500 dark:text-slate-400'>
+              <p className="text-gray-500 dark:text-slate-400">
                 Choose a contact from the list to start messaging
               </p>
             </div>
