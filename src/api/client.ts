@@ -5,7 +5,7 @@ import axios, {
 } from "axios";
 import { getSession, clearSession } from "../utils/session";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:7000";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:2020";
 
 function createClient(): AxiosInstance {
   const instance = axios.create({

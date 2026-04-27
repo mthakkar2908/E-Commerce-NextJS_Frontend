@@ -6,7 +6,7 @@ let socket: Socket | null = null;
 
 export const getSocket = (): Socket => {
   if (!socket) {
-    socket = io("http://localhost:7000", {
+    socket = io("http://localhost:2020", {
       transports: ["websocket"],
       autoConnect: true,
     });

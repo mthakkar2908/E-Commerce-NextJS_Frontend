@@ -138,7 +138,7 @@ export function createPost(formData: FormData) {
 }
 
 export function updateUser(formData: FormData, userId: string) {
-  return api.post(`/users/updateProdile/${userId}`, formData, {
+  return api.post(`/users/updateProfile/${userId}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
