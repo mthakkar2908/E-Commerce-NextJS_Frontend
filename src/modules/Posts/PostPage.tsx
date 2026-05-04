@@ -462,14 +462,12 @@ const PostPage = () => {
                   key={index}
                   className="relative rounded-lg overflow-hidden border"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={URL.createObjectURL(file)}
                     alt="preview"
                     className="h-32 w-full object-cover"
                   />
 
-                  {/* Remove button */}
                   <button
                     type="button"
                     onClick={() =>
